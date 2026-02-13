@@ -1,537 +1,376 @@
-# 💰 Monitor de Monedas Extranjeras
+# 💰 Monitor de Monedas Extranjeras v2.1.0
 
-**Aplicación web profesional** para monitorear monedas extranjeras en tiempo real con **valores de compra/venta**, **cotizaciones bancarias reales**, **búsqueda múltiple por fecha** y **gráficos personalizables**.
+## 🌟 Características Principales
 
-## ✨ Funcionalidades Principales
+Aplicación web moderna y completa para monitorear valores de monedas extranjeras con:
 
-### 📅 Búsqueda Múltiple por Fecha ⭐ NUEVO
-- **Consulta simultánea** de todas tus monedas seleccionadas
-- **Un solo clic** para ver valores históricos de múltiples divisas
-- **Resultados con colores** diferenciados por moneda
-- **Rango**: Último año de datos disponibles
-- **Estadísticas automáticas** de 30 días
-- **Compatible con**:
-  - 💵 Dólar Observado
-  - 💶 Euro
-  - 🏦 UF
+### 🔔 **Sistema de Alertas Automáticas (NUEVO)**
+- **Detección automática** de variaciones mayores al 1%
+- **Notificaciones flotantes** en tiempo real con animaciones
+- **Alertas sonoras** configurables (ON/OFF)
+- **Historial completo** de las últimas 20 alertas
+- **Panel lateral** deslizante para revisión detallada
+- **Diferenciación visual** entre aumentos (📈 verde) y caídas (📉 rojo)
+- **Contador en tiempo real** en botón flotante
+- **Auto-cierre** de notificaciones después de 10 segundos
 
-### 🏦 Cotizaciones Bancarias Reales ⭐ NUEVO
-- **Valores actualizados** desde API Cambista.cl
-- **Spreads realistas** por banco (1.5% - 2.7%)
-- **6 principales bancos de Chile**:
-  1. Banco de Chile (spread 2.5%)
-  2. Banco Estado (spread 2.2%)
-  3. Santander (spread 2.7%)
-  4. BCI (spread 2.6%)
-  5. Scotiabank (spread 2.4%)
-  6. Itaú (spread 2.5%)
-- **Sistema de fallback** a Mindicador si falla API principal
-- **Comparación lado a lado** de compra y venta
+### 📅 **Búsqueda Múltiple por Fecha**
+- Consulta simultánea de **todas las monedas seleccionadas**
+- Datos históricos hasta 1 año atrás
+- Resultados con colores diferenciados por moneda
+- Estadísticas automáticas del primer resultado
 
-### 💱 Valores de Compra y Venta
-- **Cada moneda muestra**:
-  - 🟢 Valor de compra (1.5% descuento sobre oficial)
-  - 🔴 Valor de venta (2.5% incremento sobre oficial)
-  - Valor oficial/referencial (centro)
-- **Colores diferenciados** para fácil identificación
-- **Basado en spreads reales** del mercado chileno
+### 💸 **Valores de Compra y Venta**
+- Cotizaciones oficiales desde **API Cambista.cl**
+- Spreads realistas aplicados a cada moneda
+- Valores actualizados cada 5 minutos
+- Comparación entre 6 bancos principales
 
-### 🎯 Selección Personalizada de Monedas
-- **7 monedas disponibles**:
-  - 💵 Dólar Observado (USD/CLP)
-  - 💶 Euro (EUR/CLP)
-  - 🏦 UF (Unidad de Fomento)
-  - 🇨🇳 Yuan Chino (CNY/CLP)
-  - 🇧🇷 Real Brasileño (BRL/CLP)
-  - 🇬🇧 Libra Esterlina (GBP/CLP)
-  - 🇯🇵 Yen Japonés (JPY/CLP)
-- **Sistema de checkboxes** para elegir monedas
-- **Tarjetas dinámicas** generadas automáticamente
-- **Selector sincronizado** para búsqueda por fecha
+### 🏛️ **Cotizaciones Bancarias Reales**
+- Datos desde **Cambista.cl** con spreads del mercado:
+  - **Banco Estado**: 1.7% compra / 2.2% venta
+  - **BCI**: 1.3% compra / 2.6% venta
+  - **Banco de Chile**: 1.5% compra / 2.5% venta
+  - **Santander**: 1.4% compra / 2.7% venta
+  - **Scotiabank**: 1.6% compra / 2.4% venta
+  - **Itaú**: 1.5% compra / 2.5% venta
 
-### 📊 Gráficos Interactivos
+### 📊 **Gráficos Interactivos**
+- Comparación de hasta 5 monedas simultáneas
+- Volatilidad diaria con gráficos de barras
+- Períodos configurables: 7, 30, 90 días y 1 año
+- Valores normalizados para comparación precisa
 
-#### 1. Comparación de Monedas
-- Selecciona hasta **5 monedas** simultáneamente
-- **Valores normalizados** (base 100) para comparar tendencias
-- **4 períodos**: 7, 30, 90 días o 1 año
-- **Colores diferenciados** por moneda
+### ⚙️ **Personalización Total**
+- Selección de monedas a monitorear
+- Múltiples fuentes de datos (Mindicador, BCCh, ExchangeRate, Cambista)
+- Actualización automática cada 5 minutos
+- Preferencias guardadas en navegador
 
-#### 2. Volatilidad Dinámica
-- **Selector de moneda** para analizar
-- **Variaciones diarias** de los últimos 30 días
-- **Barras de colores**: Verde (alza) / Rojo (baja)
-- **Porcentajes exactos** en tooltips
+---
 
-### 📈 Panel de Estadísticas
-Actualizado automáticamente al consultar por fecha:
-- 🔻 Mínimo en 30 días
-- 🔺 Máximo en 30 días
-- 📉 Promedio en 30 días
-- 📈 Variación total del período
+## 🚨 Sistema de Alertas - Guía Detallada
 
-### 🔄 Múltiples Fuentes de Datos
+### 🔔 **¿Cómo Funcionan las Alertas?**
 
-Selector integrado:
-1. **🌐 Todas las Fuentes** - Datos consolidados
-2. **🇨🇱 Mindicador** - Indicadores oficiales Chile
-3. **🏦 Banco Central** - Datos BCCh directos
-4. **💱 ExchangeRate** - Tasas internacionales
+1. **Detección Automática**
+   - El sistema compara el valor actual con el valor anterior
+   - Si la variación es **≥ 1% o ≤ -1%**, se activa una alerta
+   - Aplica a todas las monedas seleccionadas
 
-Cada tarjeta **identifica la fuente** de sus datos.
+2. **Notificación Visual**
+   - Aparece una **notificación flotante** en la esquina superior derecha
+   - Muestra: nombre de moneda, porcentaje, valor actual
+   - Se auto-cierra después de 10 segundos
+   - Puedes cerrarla manualmente con el botón ×
 
-### ⚡ Características Adicionales
-- 📈 **Variación en tiempo real** con indicadores visuales
-- 🔄 **Actualización automática** cada 5 minutos
-- 📱 **100% Responsive** - Móvil, tablet y escritorio
-- 🎨 **Interfaz moderna** con animaciones
-- 🔍 **Tooltips** en gráficos
-- 💾 **Sin instalación** requerida
+3. **Alerta Sonora (Opcional)**
+   - **Sonido agudo** (800Hz) para aumentos
+   - **Sonido grave** (400Hz) para disminuciones
+   - Activar/desactivar desde el panel de alertas
 
-## 🛠️ Tecnologías
+4. **Historial de Alertas**
+   - Accede al historial con el **botón flotante rojo** (🔔)
+   - Muestra las últimas 20 alertas
+   - Detalles completos: variación, valor anterior, valor actual, hora
+   - Contador visible cuando hay alertas activas
 
-### Frontend
+### 🎮 **Controles del Sistema de Alertas**
+
+| Control | Función |
+|---------|----------|
+| 🔔 **Botón FAB** | Abre/cierra el panel lateral de historial |
+| 🔊 **Sonido: ON/OFF** | Activa o desactiva alertas sonoras |
+| 🗑️ **Limpiar** | Borra todas las alertas del historial |
+| **×** (Notificación) | Cierra una notificación individual |
+
+### 📊 **Ejemplo de Alerta**
+
+```
+📈 Dólar Observado
+▲ 1.23%
+$955.50
+
+Anterior: $944.00
+Actual: $955.50
+09:45:32
+```
+
+---
+
+## 💱 Monedas Disponibles
+
+| Moneda | Código | Valor Actual | Historial | Compra/Venta | Bancario | Alertas |
+|--------|---------|--------------|-----------|--------------|----------|---------|
+| 💵 Dólar Observado | USD | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 💶 Euro | EUR | ✅ | ✅ | ✅ | ❌ | ✅ |
+| 🏦 UF | CLF | ✅ | ✅ | ❌ | ❌ | ✅ |
+| 🇨🇳 Yuan Chino | CNY | ✅ | ❌ | ✅ | ❌ | ✅ |
+| 🇧🇷 Real Brasileño | BRL | ✅ | ❌ | ✅ | ❌ | ✅ |
+| 🇬🇧 Libra Esterlina | GBP | ✅ | ❌ | ✅ | ❌ | ✅ |
+| 🇯🇵 Yen Japonés | JPY | ✅ | ❌ | ✅ | ❌ | ✅ |
+
+---
+
+## 🛠️ Tecnologías Utilizadas
+
 - **HTML5** - Estructura semántica
-- **CSS3** - Grid, Flexbox, animaciones
-- **JavaScript ES6+** - Vanilla JS sin frameworks
-- **Chart.js 4.x** - Gráficos interactivos
+- **CSS3** - Animaciones y gradientes modernos
+- **JavaScript ES6+** - Lógica dinámica y async/await
+- **Chart.js** - Visualizaciones interactivas
+- **Web Audio API** - Sistema de alertas sonoras
+- **LocalStorage** - Persistencia de preferencias
 
-### APIs Integradas
+---
 
-#### 🇨🇱 Mindicador.cl
-- **Tipo**: Gratuita, sin límites
-- **Datos**: Dólar, Euro, UF y más
-- **Actualización**: Diaria (oficial BCCh)
-- **Histórico**: Completo (último año)
-- **Formato fecha**: DD-MM-YYYY
-- **Endpoint**: `https://mindicador.cl/api`
-- **Uso**: Valores oficiales y datos históricos
+## 🚀 Instalación y Uso
 
-#### 🏦 Banco Central de Chile
-- **Tipo**: Pública
-- **Datos**: Tipos de cambio oficiales
-- **Actualización**: Diaria
-- **Fuente**: Datos gubernamentales
-- **Uso**: Validación y referencia oficial
+### Opción 1: GitHub Pages (Recomendado)
 
-#### 💱 Cambista.cl ⭐ NUEVO
-- **Tipo**: Gratuita
-- **Datos**: Cotizaciones reales del mercado chileno
-- **Actualización**: Diaria
-- **Endpoint**: `https://cambista.cl/api/rates_day.php`
-- **Uso**: Valores bancarios y spreads reales
-- **Monedas**: USD, EUR y principales divisas
+1. Ve a **Settings** > **Pages**
+2. Selecciona **Branch: main** > **/(root)**
+3. Guarda y espera 2-3 minutos
+4. Accede a: `https://diegocabrera91.github.io/Monitor-monedas-extranjeras/`
 
-#### 💱 ExchangeRate API
-- **Tipo**: Gratuita
-- **Datos**: 160+ monedas mundiales
-- **Actualización**: Diaria
-- **Endpoint**: `https://api.exchangerate-api.com/v4/latest`
-- **Uso**: Monedas internacionales (Yuan, Real, Libra, Yen)
+### Opción 2: Local
 
-## 🚀 Cómo Usar
-
-### Opción 1: Uso Local (Más Fácil)
 ```bash
 # Clonar repositorio
 git clone https://github.com/Diegocabrera91/Monitor-monedas-extranjeras.git
+
+# Abrir con servidor local
 cd Monitor-monedas-extranjeras
+python -m http.server 8000
+# O usar Live Server de VS Code
 
-# Abrir index.html en tu navegador
-# Doble clic o:
-open index.html  # macOS
-start index.html # Windows
-xdg-open index.html # Linux
-```
-
-### Opción 2: GitHub Pages
-Visita: **https://diegocabrera91.github.io/Monitor-monedas-extranjeras**
-
-## 📚 Guía de Uso
-
-### 1. Seleccionar Monedas
-```
-1. Ve a la sección "🔍 Seleccionar Monedas"
-2. Marca las casillas de las monedas que quieres ver
-3. Clic en "✅ Aplicar Selección"
-4. Las tarjetas se generarán automáticamente
+# Abrir en navegador
+http://localhost:8000
 ```
 
-### 2. Consultar Valores por Fecha (Múltiples Monedas) ⭐ NUEVO
-```
-1. Ve a "📅 Consultar Valores por Fecha"
-2. Selecciona la fecha en el calendario
-3. Clic en "🔍 Buscar Todas las Monedas"
-4. Verás TODAS las monedas disponibles para esa fecha:
-   - Dólar, Euro y UF con valores históricos
-   - Otras monedas mostrarán aviso de disponibilidad
-   - Resultados con colores diferenciados
-   - Estadísticas automáticas de 30 días
+---
+
+## 🔧 Configuración Avanzada
+
+### Personalizar Umbral de Alertas
+
+```javascript
+// En script.js, línea ~23
+const ALERT_THRESHOLD = 1.0; // Cambiar a 0.5 para alertas más sensibles
 ```
 
-**Ejemplo de resultado:**
-```
-📅 Valores para el 15/01/2026
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-💵 Dólar Observado:  $950.25
-💶 Euro:             $1.025.80
-🏦 UF:               $37.450,32
+### Modificar Duración de Notificaciones
 
-No disponible para fecha: Yuan Chino (solo valor actual disponible)
+```javascript
+// En script.js, función showAlertNotification(), línea ~136
+setTimeout(() => {
+    // ...
+}, 10000); // Cambiar a 15000 para 15 segundos
 ```
 
-### 3. Comparar en Gráficos
-```
-1. En "📊 Configurar Gráfico"
-2. Marca hasta 5 monedas para comparar
-3. Elige el período (7, 30, 90 días o 1 año)
-4. El gráfico se actualiza instantáneamente
-```
+### Cambiar Sonidos de Alerta
 
-### 4. Ver Valores Bancarios Reales ⭐ NUEVO
+```javascript
+// En script.js, función playAlertSound(), líneas ~151-152
+oscillator.frequency.value = isIncrease ? 800 : 400;
+// Probar: 1000/500 para tonos más marcados
 ```
-1. Desplázate a "🏦 Valores en Bancos Comerciales"
-2. Observa cotizaciones reales actualizadas
-3. Compara precios de compra y venta
-4. Identifica el mejor banco para cambiar divisas
-5. Spreads calculados sobre tasa oficial
-```
-
-**Ejemplo:**
-```
-🏦 Banco de Chile
-  Compra: $935.74  |  Venta: $974.01
-  
-🏦 Banco Estado
-  Compra: $934.83  |  Venta: $971.09
-  (Mejor compra) ✅
-```
-
-### 5. Analizar Volatilidad
-```
-1. En el gráfico de volatilidad
-2. Selecciona la moneda en el dropdown
-3. Verás variaciones diarias de 30 días
-```
-
-## 🌐 Desplegar en la Nube
-
-### GitHub Pages
-1. **Settings** → **Pages**
-2. Source: `main` branch, `/root` folder
-3. **Save**
-4. URL: `https://tu-usuario.github.io/Monitor-monedas-extranjeras`
-
-### Netlify
-```bash
-# Conectar repositorio GitHub
-# Configuración automática
-# Deploy instantáneo
-```
-
-### Vercel
-```bash
-# Importar desde GitHub
-# Zero-config deployment
-# CDN global incluido
-```
-
-## 📝 Estructura del Proyecto
-
-```
-Monitor-monedas-extranjeras/
-├── index.html       # HTML con selectores y búsqueda múltiple
-├── styles.css       # CSS3 responsive con animaciones
-├── script.js        # JavaScript con lógica completa + APIs
-├── .gitignore       # Exclusiones de Git
-└── README.md        # Documentación completa
-```
-
-## 🎨 Personalización
 
 ### Ajustar Spreads Bancarios
 
-En `script.js`, función `loadBankValues()`:
 ```javascript
+// En script.js, función loadBankValues(), líneas ~628-635
 realBankData = [
-    // Formato: { name, buy (spread bajo), sell (spread alto) }
-    { name: 'Banco de Chile', buy: usdRate * 0.985, sell: usdRate * 1.025 },
-    { name: 'Banco Estado', buy: usdRate * 0.983, sell: usdRate * 1.022 },
-    // Ajustar multiplicadores según spreads reales
-];
-```
-
-**Spreads actuales:**
-- **Compra**: 98.3% - 98.7% del valor oficial (descuento 1.3%-1.7%)
-- **Venta**: 102.2% - 102.7% del valor oficial (recargo 2.2%-2.7%)
-
-### Cambiar Diferencial Compra/Venta Global
-
-En `script.js`, funciones `loadMindicadorData()` y `loadExchangeRateData()`:
-```javascript
-// Compra: -1.5% (cambiar 0.985 a otro valor)
-document.getElementById('buy-dolar').textContent = 
-    formatCurrency(valor * 0.985);
-
-// Venta: +2.5% (cambiar 1.025 a otro valor)
-document.getElementById('sell-dolar').textContent = 
-    formatCurrency(valor * 1.025);
-```
-
-### Agregar Nuevo Banco
-
-En `script.js`, array `realBankData`:
-```javascript
-realBankData = [
-    // ... bancos existentes ...
     { 
-        name: 'Nuevo Banco', 
-        buy: usdRate * 0.984,  // Spread compra
-        sell: usdRate * 1.026  // Spread venta
-    }
+        name: 'Banco de Chile', 
+        buy: usdRate * 0.985,  // -1.5% (cambiar según necesidad)
+        sell: usdRate * 1.025  // +2.5%
+    },
+    // ... demás bancos
 ];
 ```
 
-### Modificar Colores
+### Aumentar Cantidad de Alertas en Historial
 
-En `styles.css`:
-```css
-/* Valor de compra */
-.buy-value p { color: #27ae60; /* Verde */ }
-
-/* Valor de venta */
-.sell-value p { color: #e74c3c; /* Rojo */ }
-
-/* Gradiente principal */
-body {
-    background: linear-gradient(135deg, #TU_COLOR1 0%, #TU_COLOR2 100%);
+```javascript
+// En script.js, función createAlert(), línea ~100
+if (alertHistory.length > 20) { // Cambiar a 50 para más alertas
+    alertHistory = alertHistory.slice(0, 20);
 }
 ```
 
-### Agregar Nueva Moneda
+---
 
-1. **En `script.js`**:
-```javascript
-const CURRENCIES_CONFIG = {
-    // ... monedas existentes ...
-    nueva: { 
-        name: 'Nombre', 
-        badge: 'CODE', 
-        color: '#HEX', 
-        apiKey: 'api_key',
-        code: 'ISO_CODE'
-    }
-};
-```
+## 📚 APIs Utilizadas
 
-2. **En `index.html`**:
-```html
-<label class="checkbox-item">
-    <input type="checkbox" value="nueva" onchange="toggleCurrency(this)">
-    <span>🏌️ Nombre (CODE)</span>
-</label>
-```
+### 1. **Mindicador.cl**
+- **URL**: `https://mindicador.cl/api`
+- **Uso**: Dólar, Euro, UF (valores actuales e históricos)
+- **Límite**: Sin límite conocido
+- **Datos**: Hasta 1 año de historial
 
-## 🔧 Roadmap
+### 2. **Cambista.cl**
+- **URL**: `https://cambista.cl/api/rates_day.php`
+- **Uso**: Cotizaciones reales de bancos chilenos
+- **Actualización**: Diaria
+- **Formato**: JSON con tasas oficiales
 
-### Completado ✅
-- [x] **Búsqueda múltiple por fecha**
-- [x] **Valores bancarios reales desde API**
-- [x] **Spreads realistas por banco**
-- [x] **Sistema de fallback para APIs**
+### 3. **ExchangeRate API**
+- **URL**: `https://api.exchangerate-api.com/v4/latest/USD`
+- **Uso**: Yuan, Real, Libra, Yen
+- **Límite**: 1500 requests/mes (gratis)
+- **Datos**: Valores actuales en tiempo real
 
-### En Desarrollo
-- [ ] **Integración directa API CMF** (requiere API key)
-- [ ] **Alertas de precio** vía email/SMS
-- [ ] **Modo oscuro/claro** interactivo
-- [ ] **Historial de conversiones** guardado
-- [ ] **Exportar resultados** de búsqueda por fecha (PDF/CSV)
-
-### Futuro
-- [ ] **Conversor de monedas** integrado
-- [ ] **Gráficos de velas** (candlestick)
-- [ ] **Comparación de rangos** personalizados
-- [ ] **Predicciones IA** con Machine Learning
-- [ ] **Widget embebible** para sitios web
-- [ ] **App móvil** React Native
-- [ ] **API propia** para desarrolladores
-- [ ] **Notificaciones push** navegador
-- [ ] **Multi-idioma** (ES, EN, PT)
-- [ ] **Integración APIs bancarias oficiales** (Banco de Chile, Santander, etc.)
-
-## ⚠️ Notas Importantes
-
-### Sobre los Datos
-- **Valores bancarios** calculados con spreads reales desde Cambista.cl
-- **Spreads** basados en diferencias reales del mercado chileno (1.5%-2.7%)
-- **API Mindicador** solo tiene datos históricos del último año
-- **Formato de fecha** debe ser DD-MM-YYYY para consultas
-- **Monedas con historial**: Solo Dólar, Euro y UF tienen datos por fecha
-
-### Limitaciones de APIs
-- **Mindicador**: Actualización diaria, no intradiaria
-- **Cambista.cl**: Datos del mercado, actualizado diariamente
-- **ExchangeRate**: Límite de solicitudes gratuitas
-- **Datos bancarios**: Calculados con spreads sobre tasa oficial
-- **API CMF**: Requiere API key (no implementada aún)
-
-### Disponibilidad por Moneda
-
-| Moneda | Valor Actual | Historial Fecha | Compra/Venta | Bancario |
-|--------|--------------|-----------------|--------------|----------|
-| Dólar | ✅ | ✅ | ✅ | ✅ |
-| Euro | ✅ | ✅ | ✅ | ❌ |
-| UF | ✅ | ✅ | ❌ | ❌ |
-| Yuan | ✅ | ❌ | ✅ | ❌ |
-| Real | ✅ | ❌ | ✅ | ❌ |
-| Libra | ✅ | ❌ | ✅ | ❌ |
-| Yen | ✅ | ❌ | ✅ | ❌ |
-
-## 🐛 Reporte de Errores
-
-¿Problema con la búsqueda por fecha?
-1. **Verifica** que la fecha esté dentro del último año
-2. **Prueba** con una fecha más reciente
-3. **Recuerda** que solo Dólar, Euro y UF tienen datos históricos
-4. **Revisa** la consola del navegador (F12) para más detalles
-
-¿Valores bancarios no cargan?
-1. **Verifica** tu conexión a internet
-2. **Espera** unos segundos, el sistema usará valores de respaldo
-3. **Actualiza** la página (F5)
-
-¿Otro error?
-1. [Abre un Issue](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)
-2. Describe:
-   - Navegador y versión
-   - Pasos para reproducir
-   - Captura de pantalla
-   - Mensaje de error (consola)
-
-## 🤝 Contribuir
-
-```bash
-# 1. Fork el proyecto
-git clone https://github.com/TU_USUARIO/Monitor-monedas-extranjeras.git
-
-# 2. Crea una rama
-git checkout -b feature/MiMejora
-
-# 3. Commit tus cambios
-git commit -m 'Agregar: Mi mejora'
-
-# 4. Push
-git push origin feature/MiMejora
-
-# 5. Abre un Pull Request
-```
-
-### Guía de Contribución
-- ✅ Código limpio y comentado
-- ✅ Variables descriptivas en español
-- ✅ Funciones modulares y reutilizables
-- ✅ Responsive desde el inicio
-- ✅ Probar en múltiples navegadores
-- ✅ Manejar errores de APIs
-- ✅ Actualizar README si es necesario
-
-## 📝 Licencia
-
-**MIT License** - Uso libre en proyectos personales y comerciales.
-
-Ver [LICENSE](LICENSE) para detalles completos.
-
-## 👤 Autor
-
-**Diego Cabrera**
-- GitHub: [@Diegocabrera91](https://github.com/Diegocabrera91)
-- Email: d.cabrera.eyz@gmail.com
-- País: Chile 🇨🇱
-
-## 🙏 Agradecimientos
-
-- **[Mindicador.cl](https://mindicador.cl)** - API de indicadores económicos
-- **[Banco Central de Chile](https://si3.bcentral.cl)** - Datos oficiales
-- **[Cambista.cl](https://cambista.cl)** - Cotizaciones reales del mercado
-- **[ExchangeRatesAPI](https://exchangeratesapi.io)** - Tasas mundiales
-- **[Chart.js](https://www.chartjs.org/)** - Gráficos profesionales
-- **Comunidad dev** de Chile 💙
-
-## 📈 Estadísticas
-
-| Característica | Valor |
-|------------------|-------|
-| Monedas | 7 |
-| APIs | 4 (Mindicador, BCCh, Cambista, ExchangeRate) |
-| Bancos | 6 |
-| Gráficos | 2 |
-| Valores por moneda | 3 (oficial, compra, venta) |
-| Períodos de análisis | 4 |
-| Búsqueda múltiple | ✅ Sí |
-| Valores bancarios reales | ✅ Sí |
-| Idiomas | 1 (Español) |
-| Costo | Gratis |
-| Instalación | No requerida |
-| Tamaño | < 150KB |
-
-## 📸 Capturas
-
-### Panel Principal
-- Tarjetas con valores compra/venta
-- Variaciones en tiempo real
-- Identificación de fuentes
-
-### Búsqueda Múltiple por Fecha ⭐
-- Un solo clic para todas las monedas
-- Resultados con colores diferenciados
-- Estadísticas instantáneas
-
-### Valores Bancarios Reales ⭐
-- Comparación de 6 bancos
-- Spreads actualizados desde API
-- Compra y venta lado a lado
-- Encuentra el mejor precio
-
-### Gráficos Personalizables
-- Hasta 5 monedas simultáneas
-- 4 períodos de tiempo
-- Volatilidad dinámica
+### 4. **Banco Central de Chile**
+- **Validación**: Datos oficiales cruzados
+- **Uso**: Respaldo y verificación
 
 ---
 
-## 🆕 Changelog
+## 📝 Historial de Versiones
 
-### v2.0.0 (Febrero 2026) ⭐ NUEVO
-- ➕ Búsqueda múltiple por fecha (todas las monedas seleccionadas)
-- ➕ Integración API Cambista.cl para valores bancarios reales
-- ➕ Spreads realistas por banco (1.5%-2.7%)
-- ➕ Sistema de fallback para APIs
-- ➕ Selector dinámico de monedas para búsqueda
-- 🔧 Mejora en manejo de errores
-- 🔧 Optimización de carga de datos
+### v2.1.0 (2026-02-13) - Sistema de Alertas
+- ✅ Detección automática de variaciones >1%
+- ✅ Notificaciones flotantes animadas
+- ✅ Alertas sonoras configurables
+- ✅ Panel lateral de historial
+- ✅ Contador de alertas en tiempo real
+- ✅ LocalStorage para preferencias
+- ✅ Responsive completo para móviles
 
-### v1.0.0 (Febrero 2026)
-- ✅ Lanzamiento inicial
-- ✅ 7 monedas disponibles
-- ✅ Valores de compra/venta
-- ✅ Gráficos interactivos
-- ✅ Búsqueda por fecha (individual)
-- ✅ Valores bancarios simulados
+### v2.0.0 (2026-02-13) - Búsqueda Múltiple y Valores Reales
+- ✅ Búsqueda simultánea de todas las monedas por fecha
+- ✅ Valores bancarios reales desde API Cambista.cl
+- ✅ Spreads realistas por banco (1.3%-2.7%)
+- ✅ Sistema de fallback entre APIs
+- ✅ Visualización mejorada con colores por moneda
 
----
-
-<div align="center">
-
-### 🌟 ¿Te fue útil? ¡Dale una estrella! ⭐
-
-**[Ver Demo en Vivo](https://diegocabrera91.github.io/Monitor-monedas-extranjeras)** |
-**[Reportar Bug](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)** |
-**[Solicitar Feature](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues/new)**
+### v1.0.0 (2026-02-12) - Lanzamiento Inicial
+- ✅ Monitor de 7 monedas
+- ✅ Gráficos comparativos
+- ✅ Búsqueda por fecha individual
+- ✅ Múltiples fuentes de datos
 
 ---
 
-**Desarrollado con ❤️ en Chile** 🇨🇱
+## 👥 Casos de Uso
 
-*Última actualización: Febrero 2026 - v2.0.0*
+### 💼 **Para Empresas**
+- Monitoreo de tipos de cambio en tiempo real
+- Alertas automáticas para decisiones de compra/venta
+- Análisis de volatilidad para proyecciones
+- Comparación de bancos para transferencias
 
-</div>
+### 💸 **Para Inversores**
+- Seguimiento de múltiples divisas simultáneamente
+- Historial de alertas para identificar patrones
+- Gráficos de tendencia para estrategias
+- Notificaciones de movimientos significativos
+
+### ✈️ **Para Viajeros**
+- Comparar mejores tasas entre bancos
+- Planificar compra de divisas
+- Monitorear monedas de destino
+
+### 🏫 **Para Estudiantes/Investigadores**
+- Datos históricos de hasta 1 año
+- Exportación visual de gráficos
+- Análisis de volatilidad
+- Código abierto para aprendizaje
+
+---
+
+## ⚠️ Limitaciones y Consideraciones
+
+### **Datos Históricos**
+- Solo **Dólar, Euro y UF** tienen historial disponible
+- **API Mindicador** solo guarda el último año
+- Otras monedas muestran solo valor actual
+
+### **Valores Bancarios**
+- Basados en tasa oficial de **Cambista.cl**
+- Spreads son **calculados** según promedios del mercado
+- **No son cotizaciones exactas** de cada banco
+- Para valores exactos, consultar directamente al banco
+
+### **Alertas**
+- Solo detectan variaciones cuando la página está abierta
+- No son alertas push/notificaciones de navegador
+- Se reinician al cerrar/recargar la página (excepto preferencias)
+
+### **Actualización**
+- Automática cada **5 minutos**
+- Manual con botón "Actualizar"
+- Algunas APIs pueden tener demoras de hasta 15 minutos
+
+---
+
+## 🐛 Solución de Problemas
+
+### No aparecen alertas
+1. Verifica que el umbral (1%) se haya superado
+2. Asegúrate de que la página esté abierta y activa
+3. Revisa la consola del navegador (F12) para errores
+
+### No se escucha el sonido
+1. Haz clic en "Sonido: ON" en el panel de alertas
+2. Verifica que el navegador permita audio automático
+3. Algunos navegadores requieren interacción previa del usuario
+
+### Datos no cargan
+1. Verifica tu conexión a internet
+2. Algunas APIs pueden estar caídas (sistema usa fallback)
+3. Intenta cambiar de fuente de datos en el selector
+
+### Panel de alertas no se abre
+1. Limpia caché del navegador (Ctrl + Shift + R)
+2. Verifica que JavaScript esté habilitado
+3. Prueba en modo incógnito
+
+---
+
+## 🚀 Próximas Mejoras Planificadas
+
+- [ ] Exportación de alertas a CSV/Excel
+- [ ] Alertas personalizadas por moneda (umbrales diferentes)
+- [ ] Notificaciones push del navegador
+- [ ] Modo oscuro
+- [ ] Comparación con monedas cripto
+- [ ] Widgets embebibles
+- [ ] API propia para integraciones
+- [ ] Historial de alertas con filtros avanzados
+
+---
+
+## 💬 Contacto y Contribuciones
+
+**Desarrollador**: Diego Cabrera  
+**GitHub**: [@Diegocabrera91](https://github.com/Diegocabrera91)  
+**Repositorio**: [Monitor-monedas-extranjeras](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras)
+
+### 🤝 Contribuir
+
+1. Fork el proyecto
+2. Crea tu rama (`git checkout -b feature/NuevaCaracteristica`)
+3. Commit tus cambios (`git commit -m 'Agregar NuevaCaracteristica'`)
+4. Push a la rama (`git push origin feature/NuevaCaracteristica`)
+5. Abre un Pull Request
+
+---
+
+## 📜 Licencia
+
+Este proyecto es de **código abierto** y está disponible bajo la licencia MIT.
+
+---
+
+## 🚀 Comienza Ahora
+
+🔗 **[Abrir Aplicación](https://diegocabrera91.github.io/Monitor-monedas-extranjeras/)**
+
+---
+
+### ⭐ Si te resultó útil, ¡dale una estrella al repositorio!
+
+---
+
+**Última actualización**: Febrero 13, 2026 | **Versión**: 2.1.0
