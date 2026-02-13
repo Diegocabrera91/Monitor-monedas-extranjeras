@@ -3,21 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Monitor Dólar Chile</title>
+    <title>Monitor de Monedas Extranjeras</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>💵 Monitor Dólar Chile</h1>
-            <p class="subtitle">Valores actualizados en tiempo real</p>
+            <h1>💰 Monitor de Monedas Extranjeras</h1>
+            <p class="subtitle">Valores en tiempo real desde múltiples fuentes</p>
         </header>
 
         <div class="update-info">
             <span id="lastUpdate">Cargando datos...</span>
-            <button id="refreshBtn" onclick="loadData()">🔄 Actualizar</button>
+            <div class="controls">
+                <select id="apiSelector" onchange="changeAPI()">
+                    <option value="all">🌐 Todas las APIs</option>
+                    <option value="mindicador">🇨🇱 Mindicador (Chile)</option>
+                    <option value="coingecko">₿ CoinGecko (Cripto)</option>
+                    <option value="exchangerate">💱 ExchangeRate</option>
+                    <option value="dolarapi">💵 DolarAPI (LATAM)</option>
+                </select>
+                <button id="refreshBtn" onclick="loadData()">🔄 Actualizar</button>
+            </div>
         </div>
 
+        <!-- Monedas Tradicionales Chile -->
+        <div class="section-header">
+            <h2>🇨🇱 Indicadores Chile</h2>
+        </div>
         <div class="cards-container">
             <div class="card dolar-observado">
                 <div class="card-header">
@@ -27,6 +40,7 @@
                 <div class="card-body">
                     <p class="value" id="dolarObservado">-</p>
                     <p class="variation" id="variacionObservado">-</p>
+                    <p class="api-source" id="sourceDolarObservado">-</p>
                 </div>
             </div>
 
@@ -38,6 +52,7 @@
                 <div class="card-body">
                     <p class="value" id="dolarAcuerdo">-</p>
                     <p class="variation" id="variacionAcuerdo">-</p>
+                    <p class="api-source" id="sourceDolarAcuerdo">-</p>
                 </div>
             </div>
 
@@ -49,6 +64,7 @@
                 <div class="card-body">
                     <p class="value" id="euro">-</p>
                     <p class="variation" id="variacionEuro">-</p>
+                    <p class="api-source" id="sourceEuro">-</p>
                 </div>
             </div>
 
@@ -60,6 +76,97 @@
                 <div class="card-body">
                     <p class="value" id="uf">-</p>
                     <p class="variation" id="variacionUF">-</p>
+                    <p class="api-source" id="sourceUF">-</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monedas Latinoamericanas -->
+        <div class="section-header">
+            <h2>🌎 Monedas Latinoamericanas</h2>
+        </div>
+        <div class="cards-container">
+            <div class="card peso-argentino">
+                <div class="card-header">
+                    <h2>Peso Argentino</h2>
+                    <span class="badge">🇦🇷 ARS</span>
+                </div>
+                <div class="card-body">
+                    <p class="value" id="pesoArgentino">-</p>
+                    <p class="variation" id="variacionARS">-</p>
+                    <p class="api-source" id="sourceARS">-</p>
+                </div>
+            </div>
+
+            <div class="card real-brasileno">
+                <div class="card-header">
+                    <h2>Real Brasileño</h2>
+                    <span class="badge">🇧🇷 BRL</span>
+                </div>
+                <div class="card-body">
+                    <p class="value" id="realBrasileno">-</p>
+                    <p class="variation" id="variacionBRL">-</p>
+                    <p class="api-source" id="sourceBRL">-</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monedas Internacionales -->
+        <div class="section-header">
+            <h2>🌍 Monedas Internacionales</h2>
+        </div>
+        <div class="cards-container">
+            <div class="card libra">
+                <div class="card-header">
+                    <h2>Libra Esterlina</h2>
+                    <span class="badge">🇬🇧 GBP</span>
+                </div>
+                <div class="card-body">
+                    <p class="value" id="libra">-</p>
+                    <p class="variation" id="variacionGBP">-</p>
+                    <p class="api-source" id="sourceGBP">-</p>
+                </div>
+            </div>
+
+            <div class="card yen">
+                <div class="card-header">
+                    <h2>Yen Japonés</h2>
+                    <span class="badge">🇯🇵 JPY</span>
+                </div>
+                <div class="card-body">
+                    <p class="value" id="yen">-</p>
+                    <p class="variation" id="variacionJPY">-</p>
+                    <p class="api-source" id="sourceJPY">-</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Criptomonedas -->
+        <div class="section-header">
+            <h2>₿ Criptomonedas</h2>
+        </div>
+        <div class="cards-container">
+            <div class="card bitcoin">
+                <div class="card-header">
+                    <h2>Bitcoin</h2>
+                    <span class="badge">₿ BTC</span>
+                </div>
+                <div class="card-body">
+                    <p class="value" id="bitcoin">-</p>
+                    <p class="variation" id="variacionBTC">-</p>
+                    <p class="api-source" id="sourceBTC">-</p>
+                </div>
+            </div>
+
+            <div class="card ethereum">
+                <div class="card-header">
+                    <h2>Ethereum</h2>
+                    <span class="badge">Ξ ETH</span>
+                </div>
+                <div class="card-body">
+                    <p class="value" id="ethereum">-</p>
+                    <p class="variation" id="variacionETH">-</p>
+                    <p class="api-source" id="sourceETH">-</p>
                 </div>
             </div>
         </div>
@@ -115,8 +222,21 @@
             <canvas id="chartVolatility"></canvas>
         </div>
 
+        <!-- Gráfico de Criptomonedas -->
+        <div class="chart-container">
+            <h2>₿ Bitcoin vs Ethereum (Últimos 7 días)</h2>
+            <p class="chart-description">Comparación de precios en USD</p>
+            <canvas id="chartCrypto"></canvas>
+        </div>
+
         <footer>
-            <p>Datos proporcionados por <a href="https://mindicador.cl" target="_blank">mindicador.cl</a></p>
+            <p>Datos proporcionados por múltiples fuentes:</p>
+            <div class="api-credits">
+                <a href="https://mindicador.cl" target="_blank">mindicador.cl</a> |
+                <a href="https://www.coingecko.com" target="_blank">CoinGecko</a> |
+                <a href="https://exchangeratesapi.io" target="_blank">ExchangeRatesAPI</a> |
+                <a href="https://dolarapi.com" target="_blank">DolarAPI</a>
+            </div>
             <p class="disclaimer">* Los valores son referenciales y pueden variar según la fuente</p>
         </footer>
     </div>

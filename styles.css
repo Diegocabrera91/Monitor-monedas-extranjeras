@@ -52,6 +52,27 @@ header h1 {
     color: #555;
 }
 
+.controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+#apiSelector {
+    padding: 10px 15px;
+    border: 2px solid #667eea;
+    border-radius: 5px;
+    background: white;
+    color: #667eea;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#apiSelector:hover {
+    background: #f0f4ff;
+}
+
 #refreshBtn {
     background: #667eea;
     color: white;
@@ -67,6 +88,17 @@ header h1 {
     background: #5568d3;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.section-header {
+    margin: 40px 0 20px 0;
+    text-align: center;
+}
+
+.section-header h2 {
+    color: white;
+    font-size: 1.8rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .cards-container {
@@ -113,25 +145,16 @@ header h1 {
     font-weight: 600;
 }
 
-.dolar-observado .badge {
-    background: #e8f5e9;
-    color: #388e3c;
-}
-
-.dolar-intercambio .badge {
-    background: #fff3e0;
-    color: #f57c00;
-}
-
-.euro .badge {
-    background: #e3f2fd;
-    color: #1976d2;
-}
-
-.uf .badge {
-    background: #fce4ec;
-    color: #c2185b;
-}
+.dolar-observado .badge { background: #e8f5e9; color: #388e3c; }
+.dolar-intercambio .badge { background: #fff3e0; color: #f57c00; }
+.euro .badge { background: #e3f2fd; color: #1976d2; }
+.uf .badge { background: #fce4ec; color: #c2185b; }
+.peso-argentino .badge { background: #e0f7fa; color: #00838f; }
+.real-brasileno .badge { background: #fff9c4; color: #f57f17; }
+.libra .badge { background: #f3e5f5; color: #7b1fa2; }
+.yen .badge { background: #fce4ec; color: #c2185b; }
+.bitcoin .badge { background: #fff3e0; color: #ff6f00; }
+.ethereum .badge { background: #e8eaf6; color: #3f51b5; }
 
 .card-body {
     text-align: center;
@@ -149,12 +172,14 @@ header h1 {
     font-weight: 600;
 }
 
-.variation.positive {
-    color: #27ae60;
-}
+.variation.positive { color: #27ae60; }
+.variation.negative { color: #e74c3c; }
 
-.variation.negative {
-    color: #e74c3c;
+.api-source {
+    font-size: 0.75rem;
+    color: #999;
+    margin-top: 8px;
+    font-style: italic;
 }
 
 .chart-container {
@@ -172,10 +197,6 @@ header h1 {
     text-align: center;
 }
 
-#chart {
-    max-height: 400px;
-}
-
 footer {
     text-align: center;
     color: white;
@@ -186,16 +207,22 @@ footer {
     backdrop-filter: blur(10px);
 }
 
-footer a {
+.api-credits {
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.api-credits a {
     color: white;
     text-decoration: none;
     font-weight: 600;
-    border-bottom: 2px solid white;
     transition: opacity 0.3s ease;
+    padding: 0 5px;
 }
 
-footer a:hover {
+.api-credits a:hover {
     opacity: 0.8;
+    text-decoration: underline;
 }
 
 .disclaimer {
@@ -210,37 +237,20 @@ footer a:hover {
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes fadeInDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Nuevos estilos para estadísticas */
 .stats-container {
     background: white;
     border-radius: 15px;
@@ -290,7 +300,6 @@ footer a:hover {
     font-weight: bold;
 }
 
-/* Selector de período */
 .chart-header {
     display: flex;
     justify-content: space-between;
@@ -341,46 +350,19 @@ footer a:hover {
     font-style: italic;
 }
 
-/* Responsive para estadísticas */
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 2rem;
-    }
-    
-    .cards-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .value {
-        font-size: 2rem;
-    }
-    
-    .update-info {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    
-    .chart-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .period-selector {
-        width: 100%;
-        overflow-x: auto;
-    }
-    
-    .period-btn {
-        white-space: nowrap;
-    }
+    header h1 { font-size: 2rem; }
+    .cards-container { grid-template-columns: 1fr; }
+    .value { font-size: 2rem; }
+    .update-info { flex-direction: column; gap: 15px; }
+    .controls { flex-direction: column; width: 100%; }
+    #apiSelector { width: 100%; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .chart-header { flex-direction: column; align-items: flex-start; }
+    .period-selector { width: 100%; overflow-x: auto; }
+    .period-btn { white-space: nowrap; }
 }
 
 @media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
+    .stats-grid { grid-template-columns: 1fr; }
 }
