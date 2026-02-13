@@ -13,6 +13,9 @@ let historicalData = {};
 let selectedAPI = 'all';
 let selectedCurrencies = ['dolar', 'euro', 'uf'];
 let realBankData = [];
+let alertHistory = [];
+let soundEnabled = true;
+let previousValues = {}; // Almacenar valores previos para comparar
 
 // Configuración de monedas
 const CURRENCIES_CONFIG = {
@@ -24,6 +27,9 @@ const CURRENCIES_CONFIG = {
     gbp: { name: 'Libra Esterlina', badge: 'GBP', color: '#7b1fa2', apiKey: 'GBP', code: 'GBP' },
     jpy: { name: 'Yen Japonés', badge: 'JPY', color: '#00838f', apiKey: 'JPY', code: 'JPY' }
 };
+
+// Configuración de alertas
+const ALERT_THRESHOLD = 1.0; // Porcentaje de variación para activar alerta
 
 // Funciones de formato
 function formatCurrency(value) {
@@ -55,6 +61,14 @@ function formatDateShort(dateString) {
     });
 }
 
+function formatTime(date) {
+    return date.toLocaleTimeString('es-CL', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}
+
 function calculateVariation(current, previous) {
     if (!previous || previous === 0) return 0;
     return ((current - previous) / previous) * 100;
@@ -65,6 +79,190 @@ function displayVariation(element, variation) {
     const className = variation >= 0 ? 'positive' : 'negative';
     element.textContent = `${arrow} ${Math.abs(variation).toFixed(2)}%`;
     element.className = `variation ${className}`;
+}
+
+// Sistema de Alertas
+function checkVariationAlert(currencyKey, currentValue, previousValue) {
+    if (!previousValue || previousValue === 0) return;
+    
+    const variation = calculateVariation(currentValue, previousValue);
+    const absVariation = Math.abs(variation);
+    
+    if (absVariation >= ALERT_THRESHOLD) {
+        createAlert(currencyKey, currentValue, previousValue, variation);
+    }
+}
+
+function createAlert(currencyKey, currentValue, previousValue, variation) {
+    const config = CURRENCIES_CONFIG[currencyKey];
+    const now = new Date();
+    
+    const alert = {
+        id: Date.now(),
+        currency: config.name,
+        currencyKey: currencyKey,
+        color: config.color,
+        currentValue: currentValue,
+        previousValue: previousValue,
+        variation: variation,
+        timestamp: now,
+        type: variation >= 0 ? 'increase' : 'decrease'
+    };
+    
+    // Agregar a historial
+    alertHistory.unshift(alert);
+    
+    // Mantener solo las últimas 20 alertas
+    if (alertHistory.length > 20) {
+        alertHistory = alertHistory.slice(0, 20);
+    }
+    
+    // Mostrar alerta visual
+    showAlertNotification(alert);
+    
+    // Reproducir sonido si está habilitado
+    if (soundEnabled) {
+        playAlertSound(variation >= 0);
+    }
+    
+    // Actualizar panel de alertas
+    updateAlertPanel();
+    
+    // Actualizar contador de alertas
+    updateAlertCounter();
+}
+
+function showAlertNotification(alert) {
+    const container = document.getElementById('alertNotifications');
+    const notification = document.createElement('div');
+    notification.className = `alert-notification ${alert.type}`;
+    notification.style.borderLeftColor = alert.color;
+    
+    const icon = alert.type === 'increase' ? '📈' : '📉';
+    const arrow = alert.type === 'increase' ? '▲' : '▼';
+    
+    notification.innerHTML = `
+        <div class="alert-icon">${icon}</div>
+        <div class="alert-content">
+            <strong>${alert.currency}</strong>
+            <span>${arrow} ${Math.abs(alert.variation).toFixed(2)}%</span>
+            <small>${formatCurrency(alert.currentValue)}</small>
+        </div>
+        <button class="alert-close" onclick="closeNotification(this)">×</button>
+    `;
+    
+    container.appendChild(notification);
+    
+    // Auto-remover después de 10 segundos
+    setTimeout(() => {
+        if (notification.parentElement) {
+            notification.style.animation = 'slideOut 0.3s ease-out';
+            setTimeout(() => notification.remove(), 300);
+        }
+    }, 10000);
+}
+
+function closeNotification(button) {
+    const notification = button.closest('.alert-notification');
+    notification.style.animation = 'slideOut 0.3s ease-out';
+    setTimeout(() => notification.remove(), 300);
+}
+
+function playAlertSound(isIncrease) {
+    // Crear contexto de audio
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    // Frecuencia diferente para subida vs bajada
+    oscillator.frequency.value = isIncrease ? 800 : 400;
+    oscillator.type = 'sine';
+    
+    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+    
+    oscillator.start(audioContext.currentTime);
+    oscillator.stop(audioContext.currentTime + 0.3);
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const button = document.getElementById('soundToggle');
+    button.textContent = soundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
+    button.className = soundEnabled ? 'sound-btn enabled' : 'sound-btn disabled';
+    
+    // Guardar preferencia en localStorage
+    localStorage.setItem('alertSoundEnabled', soundEnabled);
+}
+
+function updateAlertPanel() {
+    const panel = document.getElementById('alertList');
+    
+    if (alertHistory.length === 0) {
+        panel.innerHTML = '<p class="no-alerts">No hay alertas recientes</p>';
+        return;
+    }
+    
+    panel.innerHTML = '';
+    
+    alertHistory.forEach(alert => {
+        const alertItem = document.createElement('div');
+        alertItem.className = `alert-item ${alert.type}`;
+        alertItem.style.borderLeftColor = alert.color;
+        
+        const icon = alert.type === 'increase' ? '📈' : '📉';
+        const arrow = alert.type === 'increase' ? '▲' : '▼';
+        
+        alertItem.innerHTML = `
+            <div class="alert-item-header">
+                <span class="alert-item-icon">${icon}</span>
+                <strong>${alert.currency}</strong>
+                <span class="alert-item-variation ${alert.type}">
+                    ${arrow} ${Math.abs(alert.variation).toFixed(2)}%
+                </span>
+            </div>
+            <div class="alert-item-details">
+                <div>
+                    <small>Anterior:</small> ${formatCurrency(alert.previousValue)}
+                </div>
+                <div>
+                    <small>Actual:</small> ${formatCurrency(alert.currentValue)}
+                </div>
+            </div>
+            <div class="alert-item-time">
+                ${formatTime(alert.timestamp)}
+            </div>
+        `;
+        
+        panel.appendChild(alertItem);
+    });
+}
+
+function updateAlertCounter() {
+    const counter = document.getElementById('alertCounter');
+    if (alertHistory.length > 0) {
+        counter.textContent = alertHistory.length;
+        counter.style.display = 'flex';
+    } else {
+        counter.style.display = 'none';
+    }
+}
+
+function clearAlerts() {
+    if (confirm('¿Estás seguro de que deseas limpiar todas las alertas?')) {
+        alertHistory = [];
+        updateAlertPanel();
+        updateAlertCounter();
+        document.getElementById('alertNotifications').innerHTML = '';
+    }
+}
+
+function toggleAlertPanel() {
+    const panel = document.getElementById('alertPanel');
+    panel.classList.toggle('visible');
 }
 
 // Cambiar API seleccionada
@@ -171,13 +369,11 @@ async function searchByDate() {
         const results = [];
         const errors = [];
 
-        // Buscar en paralelo para todas las monedas seleccionadas
         for (const currencyKey of selectedCurrencies) {
             const config = CURRENCIES_CONFIG[currencyKey];
             if (!config) continue;
 
             try {
-                // Solo Mindicador tiene datos históricos por fecha
                 if (['dolar', 'euro', 'uf'].includes(currencyKey)) {
                     const response = await fetch(`${APIS.mindicador}/${config.apiKey}/${formattedDate}`);
                     
@@ -196,7 +392,6 @@ async function searchByDate() {
                         errors.push(config.name);
                     }
                 } else {
-                    // Para otras monedas, mostrar valor actual
                     errors.push(`${config.name} (solo valor actual disponible)`);
                 }
             } catch (error) {
@@ -204,7 +399,6 @@ async function searchByDate() {
             }
         }
 
-        // Mostrar resultados
         if (results.length > 0) {
             resultDiv.className = 'date-result success';
             let html = '<div class="date-result-content">';
@@ -228,7 +422,6 @@ async function searchByDate() {
             html += '</div>';
             resultDiv.innerHTML = html;
 
-            // Mostrar estadísticas para la primera moneda encontrada
             if (results.length > 0) {
                 document.getElementById('statsContainer').style.display = 'block';
                 document.getElementById('statsTitle').textContent = results[0].name;
@@ -278,14 +471,12 @@ async function loadBankValues() {
     const container = document.getElementById('bankValues');
     
     try {
-        // API Cambista.cl proporciona cotizaciones reales
         const response = await fetch(`${APIS.cambista}?codes=USD`);
         const data = await response.json();
         
         if (data && data.data && data.data.length > 0) {
             const usdRate = data.data[0].rates.USD;
             
-            // Simular valores bancarios basados en tasa real con spreads realistas
             realBankData = [
                 { name: 'Banco de Chile', buy: usdRate * 0.985, sell: usdRate * 1.025 },
                 { name: 'Banco Estado', buy: usdRate * 0.983, sell: usdRate * 1.022 },
@@ -297,7 +488,6 @@ async function loadBankValues() {
             
             renderBankCards();
         } else {
-            // Fallback: usar datos de Mindicador
             const mindicadorResponse = await fetch(`${APIS.mindicador}/dolar`);
             const mindicadorData = await mindicadorResponse.json();
             const usdRate = mindicadorData.serie[0].valor;
@@ -317,7 +507,6 @@ async function loadBankValues() {
         console.error('Error al cargar valores bancarios:', error);
         container.innerHTML = '<p class="loading-text" style="color: #e74c3c;">Error al cargar datos bancarios. Mostrando valores de respaldo...</p>';
         
-        // Usar valores de respaldo
         realBankData = [
             { name: 'Banco de Chile', buy: 920, sell: 950 },
             { name: 'Banco Estado', buy: 918, sell: 948 },
@@ -354,7 +543,7 @@ function renderBankCards() {
     });
 }
 
-// Cargar datos desde Mindicador con compra/venta
+// Cargar datos desde Mindicador con alertas
 async function loadMindicadorData() {
     try {
         const response = await fetch(APIS.mindicador);
@@ -364,6 +553,13 @@ async function loadMindicadorData() {
             // Dólar
             if (selectedCurrencies.includes('dolar') && data.dolar) {
                 const valor = data.dolar.valor;
+                
+                // Verificar alerta
+                if (previousValues['dolar']) {
+                    checkVariationAlert('dolar', valor, previousValues['dolar']);
+                }
+                previousValues['dolar'] = valor;
+                
                 document.getElementById('value-dolar').textContent = formatCurrency(valor);
                 document.getElementById('source-dolar').textContent = 'Fuente: Mindicador/BCCh';
                 
@@ -386,6 +582,13 @@ async function loadMindicadorData() {
             // Euro
             if (selectedCurrencies.includes('euro') && data.euro) {
                 const valor = data.euro.valor;
+                
+                // Verificar alerta
+                if (previousValues['euro']) {
+                    checkVariationAlert('euro', valor, previousValues['euro']);
+                }
+                previousValues['euro'] = valor;
+                
                 document.getElementById('value-euro').textContent = formatCurrency(valor);
                 document.getElementById('source-euro').textContent = 'Fuente: Mindicador/BCCh';
                 
@@ -407,7 +610,15 @@ async function loadMindicadorData() {
 
             // UF
             if (selectedCurrencies.includes('uf') && data.uf) {
-                document.getElementById('value-uf').textContent = formatCurrency(data.uf.valor);
+                const valor = data.uf.valor;
+                
+                // Verificar alerta
+                if (previousValues['uf']) {
+                    checkVariationAlert('uf', valor, previousValues['uf']);
+                }
+                previousValues['uf'] = valor;
+                
+                document.getElementById('value-uf').textContent = formatCurrency(valor);
                 document.getElementById('source-uf').textContent = 'Fuente: Mindicador/BCCh';
                 
                 if (data.uf.serie && data.uf.serie.length > 1) {
@@ -424,7 +635,7 @@ async function loadMindicadorData() {
     }
 }
 
-// Cargar datos de ExchangeRate con compra/venta
+// Cargar datos de ExchangeRate con alertas
 async function loadExchangeRateData() {
     try {
         if (selectedAPI === 'all' || selectedAPI === 'exchangerate') {
@@ -437,6 +648,13 @@ async function loadExchangeRateData() {
                 // Yuan Chino
                 if (selectedCurrencies.includes('cny') && data.rates.CNY) {
                     const cnyInClp = clpRate / data.rates.CNY;
+                    
+                    // Verificar alerta
+                    if (previousValues['cny']) {
+                        checkVariationAlert('cny', cnyInClp, previousValues['cny']);
+                    }
+                    previousValues['cny'] = cnyInClp;
+                    
                     document.getElementById('value-cny').textContent = formatCurrency(cnyInClp);
                     document.getElementById('source-cny').textContent = 'Fuente: ExchangeRate';
                     
@@ -453,6 +671,13 @@ async function loadExchangeRateData() {
                 // Real Brasileño
                 if (selectedCurrencies.includes('brl') && data.rates.BRL) {
                     const brlInClp = clpRate / data.rates.BRL;
+                    
+                    // Verificar alerta
+                    if (previousValues['brl']) {
+                        checkVariationAlert('brl', brlInClp, previousValues['brl']);
+                    }
+                    previousValues['brl'] = brlInClp;
+                    
                     document.getElementById('value-brl').textContent = formatCurrency(brlInClp);
                     document.getElementById('source-brl').textContent = 'Fuente: ExchangeRate';
                     
@@ -469,6 +694,13 @@ async function loadExchangeRateData() {
                 // Libra Esterlina
                 if (selectedCurrencies.includes('gbp') && data.rates.GBP) {
                     const gbpInClp = clpRate / data.rates.GBP;
+                    
+                    // Verificar alerta
+                    if (previousValues['gbp']) {
+                        checkVariationAlert('gbp', gbpInClp, previousValues['gbp']);
+                    }
+                    previousValues['gbp'] = gbpInClp;
+                    
                     document.getElementById('value-gbp').textContent = formatCurrency(gbpInClp);
                     document.getElementById('source-gbp').textContent = 'Fuente: ExchangeRate';
                     
@@ -485,6 +717,13 @@ async function loadExchangeRateData() {
                 // Yen Japonés
                 if (selectedCurrencies.includes('jpy') && data.rates.JPY) {
                     const jpyInClp = clpRate / data.rates.JPY;
+                    
+                    // Verificar alerta
+                    if (previousValues['jpy']) {
+                        checkVariationAlert('jpy', jpyInClp, previousValues['jpy']);
+                    }
+                    previousValues['jpy'] = jpyInClp;
+                    
                     document.getElementById('value-jpy').textContent = formatCurrency(jpyInClp);
                     document.getElementById('source-jpy').textContent = 'Fuente: ExchangeRate';
                     
@@ -609,7 +848,6 @@ function updateComparisonChart() {
             });
         }
 
-        // Normalizar datos (base 100)
         const firstValue = slicedData[0].valor;
         const normalizedValues = slicedData.map(item => (item.valor / firstValue) * 100);
 
@@ -765,6 +1003,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     document.getElementById('dateInput').setAttribute('max', today.toISOString().split('T')[0]);
     document.getElementById('dateInput').setAttribute('min', oneYearAgo.toISOString().split('T')[0]);
+    
+    // Cargar preferencia de sonido
+    const savedSoundPref = localStorage.getItem('alertSoundEnabled');
+    if (savedSoundPref !== null) {
+        soundEnabled = savedSoundPref === 'true';
+        const button = document.getElementById('soundToggle');
+        button.textContent = soundEnabled ? '🔊 Sonido: ON' : '🔇 Sonido: OFF';
+        button.className = soundEnabled ? 'sound-btn enabled' : 'sound-btn disabled';
+    }
     
     // Inicializar selector de monedas para fecha
     updateDateCurrencySelector();
