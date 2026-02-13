@@ -1,0 +1,29 @@
+{
+  "name": "monitor-monedas-extranjeras",
+  "version": "3.0.0",
+  "description": "Monitor profesional de monedas extranjeras con TypeScript y sistema de alertas",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "currency",
+    "exchange-rates",
+    "typescript",
+    "vite",
+    "chart.js",
+    "alerts"
+  ],
+  "author": "Diego Cabrera",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.1"
+  }
+}
