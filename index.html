@@ -7,10 +7,41 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Contenedor de Notificaciones de Alertas (Flotante) -->
+    <div id="alertNotifications" class="alert-notifications-container"></div>
+
+    <!-- Botón Flotante de Alertas -->
+    <button class="alert-fab" onclick="toggleAlertPanel()" title="Ver historial de alertas">
+        <span class="alert-icon">🔔</span>
+        <span id="alertCounter" class="alert-counter" style="display:none;">0</span>
+    </button>
+
+    <!-- Panel Lateral de Alertas -->
+    <div id="alertPanel" class="alert-panel">
+        <div class="alert-panel-header">
+            <h3>🔔 Alertas de Variación</h3>
+            <button class="close-panel" onclick="toggleAlertPanel()">×</button>
+        </div>
+        <div class="alert-panel-controls">
+            <button id="soundToggle" class="sound-btn enabled" onclick="toggleSound()">
+                🔊 Sonido: ON
+            </button>
+            <button class="clear-btn" onclick="clearAlerts()">
+                🗑️ Limpiar
+            </button>
+        </div>
+        <div class="alert-panel-info">
+            <p>🚨 Umbral de alerta: <strong>±1%</strong></p>
+        </div>
+        <div id="alertList" class="alert-list">
+            <p class="no-alerts">No hay alertas recientes</p>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <h1>💰 Monitor de Monedas Extranjeras</h1>
-            <p class="subtitle">Valores en tiempo real con compra/venta y cotizaciones bancarias</p>
+            <p class="subtitle">Valores en tiempo real con compra/venta, cotizaciones bancarias y alertas automáticas</p>
         </header>
 
         <div class="update-info">
@@ -169,7 +200,7 @@
                 <a href="https://cambista.cl" target="_blank">Cambista.cl</a> |
                 <a href="https://exchangeratesapi.io" target="_blank">ExchangeRatesAPI</a>
             </div>
-            <p class="disclaimer">* Los valores son referenciales y pueden variar según la fuente. Valores bancarios calculados con spreads realistas basados en cotizaciones oficiales.</p>
+            <p class="disclaimer">* Los valores son referenciales y pueden variar según la fuente. Valores bancarios calculados con spreads realistas basados en cotizaciones oficiales. Alertas configuradas para variaciones ≥ 1%.</p>
         </footer>
     </div>
 
