@@ -1,0 +1,48 @@
+# Archivos y directorios a ignorar en Git
+
+# Dependencias
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# IDE y editores
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Compilación y build
+dist/
+build/
+*.min.js
+*.min.css
+
+# Pruebas
+coverage/
+.nyc_output/
+
+# Temporal
+temp/
+tmp/
+*.tmp
+
+# Sistema operativo
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
