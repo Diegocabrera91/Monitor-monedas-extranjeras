@@ -1,8 +1,7 @@
 // URLs de las APIs
 const APIS = {
     mindicador: 'https://mindicador.cl/api',
-    exchangerate: 'https://api.exchangerate-api.com/v4/latest',
-    dolarapi: 'https://dolarapi.com/v1'
+    exchangerate: 'https://api.exchangerate-api.com/v4/latest'
 };
 
 // Variables globales
@@ -18,11 +17,21 @@ const CURRENCIES_CONFIG = {
     dolar: { name: 'Dólar Observado', badge: 'USD', color: '#388e3c', apiKey: 'dolar' },
     euro: { name: 'Euro', badge: 'EUR', color: '#1976d2', apiKey: 'euro' },
     uf: { name: 'UF', badge: 'Unidad Fomento', color: '#c2185b', apiKey: 'uf' },
-    ars: { name: 'Peso Argentino', badge: 'ARS', color: '#00838f', apiKey: 'ARS' },
+    cny: { name: 'Yuan Chino', badge: 'CNY', color: '#d32f2f', apiKey: 'CNY' },
     brl: { name: 'Real Brasileño', badge: 'BRL', color: '#f57f17', apiKey: 'BRL' },
     gbp: { name: 'Libra Esterlina', badge: 'GBP', color: '#7b1fa2', apiKey: 'GBP' },
-    jpy: { name: 'Yen Japonés', badge: 'JPY', color: '#d32f2f', apiKey: 'JPY' }
+    jpy: { name: 'Yen Japonés', badge: 'JPY', color: '#00838f', apiKey: 'JPY' }
 };
+
+// Datos simulados de bancos (en producción, estos vendrían de APIs reales)
+const BANK_DATA = [
+    { name: 'Banco de Chile', buy: 920, sell: 950 },
+    { name: 'Banco Estado', buy: 918, sell: 948 },
+    { name: 'Santander', buy: 922, sell: 952 },
+    { name: 'BCI', buy: 921, sell: 951 },
+    { name: 'Scotiabank', buy: 919, sell: 949 },
+    { name: 'Itau', buy: 920, sell: 950 }
+];
 
 // Funciones de formato
 function formatCurrency(value) {
@@ -113,6 +122,16 @@ function renderCurrencyCards() {
             </div>
             <div class="card-body">
                 <p class="value" id="value-${currencyKey}">Cargando...</p>
+                <div class="buy-sell-container" id="buysell-${currencyKey}" style="display:none;">
+                    <div class="buy-value">
+                        <h4>Compra</h4>
+                        <p id="buy-${currencyKey}">-</p>
+                    </div>
+                    <div class="sell-value">
+                        <h4>Venta</h4>
+                        <p id="sell-${currencyKey}">-</p>
+                    </div>
+                </div>
                 <p class="variation" id="variation-${currencyKey}">-</p>
                 <p class="api-source" id="source-${currencyKey}">-</p>
             </div>
@@ -121,7 +140,7 @@ function renderCurrencyCards() {
     });
 }
 
-// Buscar por fecha
+// Buscar por fecha (CORREGIDO)
 async function searchByDate() {
     const dateInput = document.getElementById('dateInput').value;
     const currency = document.getElementById('currencyDate').value;
@@ -138,7 +157,17 @@ async function searchByDate() {
         resultDiv.innerHTML = '<p>Buscando...</p>';
 
         const apiKey = CURRENCIES_CONFIG[currency].apiKey;
-        const response = await fetch(`${APIS.mindicador}/${apiKey}/${dateInput}`);
+        
+        // Formato de fecha: DD-MM-YYYY (requerido por Mindicador)
+        const [year, month, day] = dateInput.split('-');
+        const formattedDate = `${day}-${month}-${year}`;
+        
+        const response = await fetch(`${APIS.mindicador}/${apiKey}/${formattedDate}`);
+        
+        if (!response.ok) {
+            throw new Error('No se encontraron datos');
+        }
+        
         const data = await response.json();
 
         if (data.serie && data.serie.length > 0) {
@@ -170,7 +199,7 @@ async function searchByDate() {
     } catch (error) {
         console.error('Error al buscar por fecha:', error);
         resultDiv.className = 'date-result error';
-        resultDiv.innerHTML = '<p>❌ Error al buscar datos. Intenta nuevamente.</p>';
+        resultDiv.innerHTML = '<p>❌ No se encontraron datos para esta fecha. Intenta con una fecha más reciente.</p>';
     }
 }
 
@@ -194,17 +223,51 @@ function updateStatsForCurrency(data) {
     changeElement.style.color = change >= 0 ? '#27ae60' : '#e74c3c';
 }
 
-// Cargar datos desde Mindicador
+// Cargar valores bancarios
+function loadBankValues() {
+    const container = document.getElementById('bankValues');
+    container.innerHTML = '';
+
+    BANK_DATA.forEach(bank => {
+        const bankCard = document.createElement('div');
+        bankCard.className = 'bank-card';
+        bankCard.innerHTML = `
+            <h3>${bank.name}</h3>
+            <div class="bank-values">
+                <div class="bank-buy">
+                    <h4>Compra</h4>
+                    <p>${formatCurrency(bank.buy)}</p>
+                </div>
+                <div class="bank-sell">
+                    <h4>Venta</h4>
+                    <p>${formatCurrency(bank.sell)}</p>
+                </div>
+            </div>
+        `;
+        container.appendChild(bankCard);
+    });
+}
+
+// Cargar datos desde Mindicador con compra/venta
 async function loadMindicadorData() {
     try {
         const response = await fetch(APIS.mindicador);
         const data = await response.json();
 
-        if (selectedAPI === 'all' || selectedAPI === 'mindicador') {
+        if (selectedAPI === 'all' || selectedAPI === 'mindicador' || selectedAPI === 'bcentral') {
             // Dólar
             if (selectedCurrencies.includes('dolar') && data.dolar) {
-                document.getElementById('value-dolar').textContent = formatCurrency(data.dolar.valor);
-                document.getElementById('source-dolar').textContent = 'Fuente: Mindicador';
+                const valor = data.dolar.valor;
+                document.getElementById('value-dolar').textContent = formatCurrency(valor);
+                document.getElementById('source-dolar').textContent = 'Fuente: Mindicador/BCCh';
+                
+                // Simular valores de compra y venta (BCCh no proporciona estos valores directamente)
+                const buySellDiv = document.getElementById('buysell-dolar');
+                if (buySellDiv) {
+                    buySellDiv.style.display = 'flex';
+                    document.getElementById('buy-dolar').textContent = formatCurrency(valor * 0.98);
+                    document.getElementById('sell-dolar').textContent = formatCurrency(valor * 1.02);
+                }
                 
                 if (data.dolar.serie && data.dolar.serie.length > 1) {
                     const variation = calculateVariation(
@@ -217,8 +280,16 @@ async function loadMindicadorData() {
 
             // Euro
             if (selectedCurrencies.includes('euro') && data.euro) {
-                document.getElementById('value-euro').textContent = formatCurrency(data.euro.valor);
-                document.getElementById('source-euro').textContent = 'Fuente: Mindicador';
+                const valor = data.euro.valor;
+                document.getElementById('value-euro').textContent = formatCurrency(valor);
+                document.getElementById('source-euro').textContent = 'Fuente: Mindicador/BCCh';
+                
+                const buySellDiv = document.getElementById('buysell-euro');
+                if (buySellDiv) {
+                    buySellDiv.style.display = 'flex';
+                    document.getElementById('buy-euro').textContent = formatCurrency(valor * 0.98);
+                    document.getElementById('sell-euro').textContent = formatCurrency(valor * 1.02);
+                }
                 
                 if (data.euro.serie && data.euro.serie.length > 1) {
                     const variation = calculateVariation(
@@ -232,7 +303,7 @@ async function loadMindicadorData() {
             // UF
             if (selectedCurrencies.includes('uf') && data.uf) {
                 document.getElementById('value-uf').textContent = formatCurrency(data.uf.valor);
-                document.getElementById('source-uf').textContent = 'Fuente: Mindicador';
+                document.getElementById('source-uf').textContent = 'Fuente: Mindicador/BCCh';
                 
                 if (data.uf.serie && data.uf.serie.length > 1) {
                     const variation = calculateVariation(
@@ -248,7 +319,7 @@ async function loadMindicadorData() {
     }
 }
 
-// Cargar datos de ExchangeRate
+// Cargar datos de ExchangeRate con compra/venta
 async function loadExchangeRateData() {
     try {
         if (selectedAPI === 'all' || selectedAPI === 'exchangerate') {
@@ -258,12 +329,20 @@ async function loadExchangeRateData() {
             if (data.rates) {
                 const clpRate = data.rates.CLP || 900;
 
-                // Peso Argentino
-                if (selectedCurrencies.includes('ars') && data.rates.ARS) {
-                    const arsInClp = clpRate / data.rates.ARS;
-                    document.getElementById('value-ars').textContent = formatCurrency(arsInClp);
-                    document.getElementById('source-ars').textContent = 'Fuente: ExchangeRate';
-                    document.getElementById('variation-ars').textContent = '-';
+                // Yuan Chino
+                if (selectedCurrencies.includes('cny') && data.rates.CNY) {
+                    const cnyInClp = clpRate / data.rates.CNY;
+                    document.getElementById('value-cny').textContent = formatCurrency(cnyInClp);
+                    document.getElementById('source-cny').textContent = 'Fuente: ExchangeRate';
+                    
+                    const buySellDiv = document.getElementById('buysell-cny');
+                    if (buySellDiv) {
+                        buySellDiv.style.display = 'flex';
+                        document.getElementById('buy-cny').textContent = formatCurrency(cnyInClp * 0.98);
+                        document.getElementById('sell-cny').textContent = formatCurrency(cnyInClp * 1.02);
+                    }
+                    
+                    document.getElementById('variation-cny').textContent = '-';
                 }
 
                 // Real Brasileño
@@ -271,6 +350,14 @@ async function loadExchangeRateData() {
                     const brlInClp = clpRate / data.rates.BRL;
                     document.getElementById('value-brl').textContent = formatCurrency(brlInClp);
                     document.getElementById('source-brl').textContent = 'Fuente: ExchangeRate';
+                    
+                    const buySellDiv = document.getElementById('buysell-brl');
+                    if (buySellDiv) {
+                        buySellDiv.style.display = 'flex';
+                        document.getElementById('buy-brl').textContent = formatCurrency(brlInClp * 0.98);
+                        document.getElementById('sell-brl').textContent = formatCurrency(brlInClp * 1.02);
+                    }
+                    
                     document.getElementById('variation-brl').textContent = '-';
                 }
 
@@ -279,6 +366,14 @@ async function loadExchangeRateData() {
                     const gbpInClp = clpRate / data.rates.GBP;
                     document.getElementById('value-gbp').textContent = formatCurrency(gbpInClp);
                     document.getElementById('source-gbp').textContent = 'Fuente: ExchangeRate';
+                    
+                    const buySellDiv = document.getElementById('buysell-gbp');
+                    if (buySellDiv) {
+                        buySellDiv.style.display = 'flex';
+                        document.getElementById('buy-gbp').textContent = formatCurrency(gbpInClp * 0.98);
+                        document.getElementById('sell-gbp').textContent = formatCurrency(gbpInClp * 1.02);
+                    }
+                    
                     document.getElementById('variation-gbp').textContent = '-';
                 }
 
@@ -287,6 +382,14 @@ async function loadExchangeRateData() {
                     const jpyInClp = clpRate / data.rates.JPY;
                     document.getElementById('value-jpy').textContent = formatCurrency(jpyInClp);
                     document.getElementById('source-jpy').textContent = 'Fuente: ExchangeRate';
+                    
+                    const buySellDiv = document.getElementById('buysell-jpy');
+                    if (buySellDiv) {
+                        buySellDiv.style.display = 'flex';
+                        document.getElementById('buy-jpy').textContent = formatCurrency(jpyInClp * 0.98);
+                        document.getElementById('sell-jpy').textContent = formatCurrency(jpyInClp * 1.02);
+                    }
+                    
                     document.getElementById('variation-jpy').textContent = '-';
                 }
             }
@@ -304,7 +407,8 @@ async function loadData() {
 
         await Promise.all([
             loadMindicadorData(),
-            loadExchangeRateData()
+            loadExchangeRateData(),
+            loadBankValues()
         ]);
 
         await loadHistoricalData();
@@ -549,9 +653,13 @@ function updateVolatilityChart() {
 
 // Inicializar la aplicación
 document.addEventListener('DOMContentLoaded', () => {
-    // Establecer fecha máxima (hoy)
-    const today = new Date().toISOString().split('T')[0];
-    document.getElementById('dateInput').setAttribute('max', today);
+    // Establecer fecha máxima (hoy) y mínima (1 año atrás)
+    const today = new Date();
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
+    
+    document.getElementById('dateInput').setAttribute('max', today.toISOString().split('T')[0]);
+    document.getElementById('dateInput').setAttribute('min', oneYearAgo.toISOString().split('T')[0]);
     
     // Renderizar tarjetas iniciales
     renderCurrencyCards();
