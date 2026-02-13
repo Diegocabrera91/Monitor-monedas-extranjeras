@@ -1,245 +1,285 @@
 # 💰 Monitor de Monedas Extranjeras
 
-Aplicación web completa en tiempo real para monitorear **10 monedas y criptomonedas** desde **múltiples fuentes confiables**, con gráficos de evolución histórica interactivos.
+**Aplicación web interactiva y personalizable** para monitorear monedas extranjeras en tiempo real con **selección flexible**, **consultas por fecha** y **gráficos dinámicos**.
 
-## 🌟 Características Destacadas
+## ✨ Funcionalidades Principales
 
-### 💱 10 Monedas Monitoreadas
+### 🎯 Selección Personalizada de Monedas
+- **Elige las monedas que quieres ver** con checkboxes intuitivos
+- **Hasta 8 monedas disponibles** para monitorear:
+  - 💵 Dólar Observado (USD/CLP)
+  - 💶 Euro (EUR/CLP)
+  - 🏦 UF (Unidad de Fomento)
+  - 🇦🇷 Peso Argentino (ARS)
+  - 🇧🇷 Real Brasileño (BRL)
+  - 🇬🇧 Libra Esterlina (GBP)
+  - 🇯🇵 Yen Japonés (JPY)
+- **Aplicar selección** instantáneamente con un clic
+- **Tarjetas dinámicas** que se generan automáticamente
 
-#### 🇨🇱 Indicadores Chile
-- ✅ **Dólar Observado** (oficial del Banco Central)
-- ✅ **Dólar Acuerdo** (intercambio)
-- ✅ **Euro** (EUR)
-- ✅ **UF** (Unidad de Fomento)
+### 📅 Consulta por Fecha Específica
+- **Buscar valor histórico** de cualquier moneda
+- **Selector de fecha** con calendario visual
+- **Resultados instantáneos** con:
+  - Valor exacto en la fecha seleccionada
+  - Fecha formateada
+  - Estadísticas de 30 días automáticas
+- **Validación inteligente** de fechas disponibles
 
-#### 🌎 Monedas Latinoamericanas
-- 🇦🇷 **Peso Argentino** (ARS)
-- 🇧🇷 **Real Brasileño** (BRL)
+### 📊 Gráficos Personalizables
 
-#### 🌍 Monedas Internacionales
-- 🇬🇧 **Libra Esterlina** (GBP)
-- 🇯🇵 **Yen Japonés** (JPY)
+#### 1. Comparación de Monedas
+- **Selecciona hasta 5 monedas** para comparar simultáneamente
+- **Valores normalizados** (base 100) para comparar tendencias
+- **Períodos ajustables**: 7, 30, 90 días o 1 año
+- **Colores únicos** por cada moneda para fácil identificación
 
-#### ₿ Criptomonedas
-- **Bitcoin** (BTC)
-- **Ethereum** (ETH)
+#### 2. Volatilidad Dinámica
+- **Elige la moneda** a analizar
+- **Visualización clara** de variaciones diarias
+- **Colores semánticos**: Verde (alza) / Rojo (baja)
+- **Últimos 30 días** de datos
+
+### 📈 Panel de Estadísticas
+Se actualiza automáticamente al consultar por fecha:
+- 🔻 **Mínimo** en 30 días
+- 🔺 **Máximo** en 30 días
+- 📉 **Promedio** en 30 días
+- 📈 **Variación total** del período
 
 ### 🔄 Múltiples Fuentes de Datos
 
-Selector integrado que permite elegir entre:
-1. **🌐 Todas las APIs** - Datos consolidados de todas las fuentes
-2. **🇨🇱 Mindicador** - API oficial de Chile para indicadores económicos
-3. **₿ CoinGecko** - Datos de criptomonedas en tiempo real
-4. **💱 ExchangeRate** - Tasas de cambio internacionales
-5. **💵 DolarAPI** - Especializada en monedas latinoamericanas
+Selector de API integrado:
+1. **🌐 Todas las APIs** - Consolidado de todas las fuentes
+2. **🇨🇱 Mindicador** - Indicadores oficiales de Chile
+3. **💱 ExchangeRate** - Tasas de cambio internacionales
+4. **💵 DolarAPI** - Monedas latinoamericanas
 
-Cada tarjeta muestra la **fuente de datos** utilizada para mayor transparencia.
+Cada tarjeta muestra la **fuente de datos** utilizada.
 
-### 📊 4 Gráficos Interactivos
-
-1. **Evolución Histórica del Dólar**
-   - Selector de período: 7 días, 30 días, 90 días, 1 año
-   - Gráfico de líneas con datos históricos precisos
-
-2. **Comparación de Monedas**
-   - Dólar vs Euro vs UF
-   - Valores normalizados (base 100) para comparar tendencias
-
-3. **Volatilidad Diaria**
-   - Variación porcentual día a día del dólar
-   - Gráfico de barras con indicadores visuales
-
-4. **Bitcoin vs Ethereum**
-   - Comparación de precios en USD
-   - Doble eje Y para mejor visualización
-   - Últimos 7 días de datos
-
-### 📊 Panel de Estadísticas
-- 🔻 Valor mínimo en 30 días
-- 🔺 Valor máximo en 30 días
-- 📉 Promedio en 30 días
-- 📈 Variación total del período
-
-### ✨ Otras Características
-- 📈 **Variación porcentual** en tiempo real con indicadores visuales
+### ⚡ Características Adicionales
+- 📈 **Variación en tiempo real** con indicadores visuales (▲▼)
 - 🔄 **Actualización automática** cada 5 minutos
-- 📱 **Diseño responsive** perfecto para móvil y escritorio
+- 📱 **100% Responsive** - Perfecto en móvil, tablet y escritorio
 - 🎨 **Interfaz moderna** con animaciones fluidas
-- 🔍 **Tooltips informativos** en todos los gráficos
-- 🔖 **Indicador de fuente** en cada moneda
+- 🔍 **Tooltips informativos** en gráficos
+- 💾 **Sin instalación** - Solo abre y usa
 
-## 🛠️ Tecnologías Utilizadas
+## 🛠️ Tecnologías
 
 ### Frontend
-- **HTML5** - Estructura semántica y accesible
-- **CSS3** - Diseño moderno con gradientes, animaciones y responsive
-- **JavaScript (Vanilla)** - Lógica sin dependencias de frameworks
-- **Chart.js** - Biblioteca líder para gráficos interactivos
+- **HTML5** - Estructura semántica moderna
+- **CSS3** - Diseño responsivo con Grid y Flexbox
+- **JavaScript ES6+** - Lógica pura sin frameworks
+- **Chart.js** - Gráficos interactivos profesionales
 
 ### APIs Integradas
-- **[Mindicador.cl](https://mindicador.cl)** - Indicadores económicos de Chile
-- **[CoinGecko API](https://www.coingecko.com/api)** - Datos de criptomonedas
-- **[ExchangeRate API](https://exchangeratesapi.io)** - Tasas de cambio mundiales
-- **[DolarAPI](https://dolarapi.com)** - Monedas latinoamericanas
+
+#### 🇨🇱 Mindicador.cl
+- **Gratuita y sin límites**
+- Indicadores económicos oficiales de Chile
+- Actualización diaria
+- Histórico completo
+- **Endpoint**: `https://mindicador.cl/api`
+
+#### 💱 ExchangeRate API
+- **Gratuita para uso básico**
+- 160+ monedas mundiales
+- Actualización diaria
+- **Endpoint**: `https://api.exchangerate-api.com/v4/latest`
+
+#### 💵 DolarAPI
+- **Gratuita**
+- Especializada en América Latina
+- Datos en tiempo real
+- **Endpoint**: `https://dolarapi.com/v1`
 
 ## 🚀 Cómo Usar
 
-### Opción 1: Abrir Directamente (Más Fácil)
-1. Descarga o clona este repositorio
-2. Abre el archivo `index.html` en tu navegador
-3. ¡Listo! No requiere instalación ni servidor
+### Opción 1: Uso Directo (Recomendado)
+1. Clona o descarga el repositorio
+2. Abre `index.html` en tu navegador
+3. ¡Listo! No necesitas servidor ni instalaciones
 
-### Opción 2: Clonar Repositorio
 ```bash
 git clone https://github.com/Diegocabrera91/Monitor-monedas-extranjeras.git
 cd Monitor-monedas-extranjeras
+# Abre index.html con doble clic o desde tu navegador
 ```
 
-Luego abre `index.html` en tu navegador favorito.
+### Opción 2: Ver Demo en Vivo
+Visita: **https://diegocabrera91.github.io/Monitor-monedas-extranjeras**
 
-### Opción 3: Ver en Vivo
-Visita la versión desplegada en:
-**https://diegocabrera91.github.io/Monitor-monedas-extranjeras**
+## 📚 Guía de Uso
 
-## 🌐 Despliegue en la Nube
+### Seleccionar Monedas
+1. En la sección **"🔍 Seleccionar Monedas"**
+2. Marca/desmarca las casillas de las monedas deseadas
+3. Haz clic en **"✅ Aplicar Selección"**
+4. Las tarjetas se actualizarán automáticamente
 
-### GitHub Pages (Recomendado)
+### Consultar por Fecha
+1. En la sección **"📅 Consultar Valor por Fecha"**
+2. Selecciona la fecha deseada
+3. Elige la moneda a consultar
+4. Haz clic en **"🔍 Buscar"**
+5. Verás el valor exacto y estadísticas automáticas
+
+### Personalizar Gráficos
+1. En **"📊 Configurar Gráfico de Comparación"**
+2. Selecciona hasta 5 monedas para comparar
+3. Elige el período: 7, 30, 90 días o 1 año
+4. El gráfico se actualiza instantáneamente
+
+### Analizar Volatilidad
+1. Debajo del gráfico de volatilidad
+2. Selecciona la moneda en el dropdown
+3. El gráfico muestra variaciones diarias de 30 días
+
+## 🌐 Despliegue
+
+### GitHub Pages (Gratis)
 1. Ve a **Settings** de tu repositorio
-2. Selecciona **Pages** en el menú lateral
-3. En "Source", elige rama `main` y carpeta `/root`
-4. Haz clic en **Save**
-5. Tu app estará en: `https://tu-usuario.github.io/Monitor-monedas-extranjeras`
+2. Selecciona **Pages**
+3. Fuente: Rama `main`, carpeta `/root`
+4. Guarda y espera 2-3 minutos
+5. URL: `https://tu-usuario.github.io/Monitor-monedas-extranjeras`
 
-### Netlify (Despliegue Instantáneo)
-1. Conecta tu repositorio de GitHub
-2. El despliegue es automático
-3. Obtén un dominio personalizado gratis
+### Netlify (Instantáneo)
+1. Conecta tu repositorio GitHub
+2. Despliegue automático
+3. Dominio personalizado gratis
+4. SSL incluido
 
-### Vercel (Alternativa Rápida)
+### Vercel (Ultra Rápido)
 1. Importa desde GitHub
-2. Despliegue automático con cada push
-3. CDN global incluido
-
-## 📊 Detalles de las APIs
-
-### 🇨🇱 Mindicador.cl
-- **Tipo**: Gratuita, sin límites
-- **Datos**: Dólar, Euro, UF y otros indicadores chilenos
-- **Actualización**: Diaria (datos oficiales)
-- **Histórico**: Hasta 1 año
-- **Endpoint**: `https://mindicador.cl/api`
-
-### ₿ CoinGecko
-- **Tipo**: Gratuita con límites generosos
-- **Datos**: 10,000+ criptomonedas
-- **Actualización**: Cada minuto
-- **Histórico**: Ilimitado
-- **Endpoint**: `https://api.coingecko.com/api/v3`
-
-### 💱 ExchangeRate API
-- **Tipo**: Gratuita para uso básico
-- **Datos**: 160+ monedas mundiales
-- **Actualización**: Diaria
-- **Formato**: JSON simple
-- **Endpoint**: `https://api.exchangerate-api.com/v4/latest`
-
-### 💵 DolarAPI
-- **Tipo**: Gratuita
-- **Datos**: Monedas latinoamericanas
-- **Actualización**: Tiempo real
-- **Especialidad**: Argentina, Chile, Uruguay
-- **Endpoint**: `https://dolarapi.com/v1`
+2. Auto-deploy con cada commit
+3. CDN global
+4. Analytics incluido
 
 ## 📝 Estructura del Proyecto
 
 ```
 Monitor-monedas-extranjeras/
 │
-├── index.html          # Página principal con estructura HTML
-├── styles.css          # Estilos CSS3 con animaciones
-├── script.js           # Lógica JavaScript e integración de APIs
-├── .gitignore          # Archivos a ignorar en Git
-└── README.md           # Documentación completa
+├── index.html          # HTML con selectores y estructura
+├── styles.css          # CSS3 con diseño responsive
+├── script.js           # JavaScript con lógica dinámica
+├── .gitignore          # Archivos ignorados por Git
+└── README.md           # Documentación (este archivo)
 ```
 
 ## 🎨 Personalización
 
-### Cambiar Colores
-Edita `styles.css`:
+### Agregar Nueva Moneda
+
+1. **En `script.js`**, agrega la configuración:
+```javascript
+const CURRENCIES_CONFIG = {
+    // ... monedas existentes ...
+    nueva_moneda: { 
+        name: 'Nombre Completo', 
+        badge: 'CODIGO', 
+        color: '#HEX_COLOR', 
+        apiKey: 'api_key' 
+    }
+};
+```
+
+2. **En `index.html`**, agrega el checkbox:
+```html
+<label class="checkbox-item">
+    <input type="checkbox" value="nueva_moneda" onchange="toggleCurrency(this)">
+    <span>🏌️ Nombre (CODIGO)</span>
+</label>
+```
+
+### Cambiar Colores del Tema
+
+En `styles.css`:
 ```css
-/* Gradiente principal del fondo */
+/* Gradiente principal */
 body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #TU_COLOR1 0%, #TU_COLOR2 100%);
 }
 
-/* Colores de tarjetas individuales */
-.bitcoin .badge { 
-    background: #fff3e0; 
-    color: #ff6f00; 
+/* Botones */
+.apply-btn {
+    background: #TU_COLOR;
 }
 ```
 
-### Agregar Nuevas Monedas
-1. Añade una nueva tarjeta en `index.html`
-2. Crea la función de carga en `script.js`
-3. Integra la API correspondiente
+### Ajustar Período de Actualización
 
-### Modificar Períodos de Actualización
+En `script.js`:
 ```javascript
-// En script.js, cambiar de 5 a X minutos
+// Cambiar de 5 a X minutos
 setInterval(loadData, X * 60 * 1000);
 ```
 
 ## 🔧 Funcionalidades Futuras
 
-- [ ] **Alertas por email/SMS** cuando una moneda alcance cierto valor
-- [ ] **Modo oscuro/claro** con switch interactivo
+- [ ] **Más criptomonedas** (Bitcoin, Ethereum, etc.) como opción
+- [ ] **Alertas personalizadas** por email/SMS al alcanzar valores
+- [ ] **Modo oscuro/claro** con toggle
 - [ ] **Exportar datos** a CSV, Excel, PDF
-- [ ] **Conversor de monedas** integrado
-- [ ] **Comparación personalizada** de hasta 5 monedas
-- [ ] **Más criptomonedas**: Cardano, Solana, Ripple
-- [ ] **Predicciones con IA** usando Machine Learning
-- [ ] **Widget embebible** para otros sitios
-- [ ] **App móvil** con React Native
-- [ ] **Notificaciones push** en el navegador
+- [ ] **Conversor integrado** entre todas las monedas
+- [ ] **Comparación de rangos** de fechas personalizados
+- [ ] **Predicciones con IA** basadas en histórico
+- [ ] **Widget embebible** para otros sitios web
+- [ ] **App móvil** nativa (React Native)
+- [ ] **Notificaciones push** en navegador
+- [ ] **Historial de consultas** guardado localmente
+- [ ] **Favoritos** para acceso rápido
 
-## 🐛 Reporte de Problemas
+## 🐛 Reporte de Errores
 
-Si encuentras algún error o tienes sugerencias:
-1. Abre un [Issue](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)
-2. Describe el problema detalladamente
-3. Incluye capturas de pantalla si es posible
+¿Encontraste un bug?
+1. Ve a [Issues](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)
+2. Haz clic en "New Issue"
+3. Describe el problema con:
+   - Navegador y versión
+   - Pasos para reproducir
+   - Capturas de pantalla
+   - Mensaje de error (si aplica)
 
-## 🤝 Contribuciones
+## 🤝 Contribuir
 
-¡Las contribuciones son bienvenidas! Sigue estos pasos:
+¡Las contribuciones son bienvenidas! Para contribuir:
 
-1. **Fork** el proyecto
-2. Crea una rama para tu feature:
+1. **Fork** este repositorio
+2. **Crea una rama** para tu feature:
    ```bash
-   git checkout -b feature/NuevaFuncionalidad
+   git checkout -b feature/MiNuevaFuncionalidad
    ```
 3. **Commit** tus cambios:
    ```bash
-   git commit -m 'Agregar nueva funcionalidad X'
+   git commit -m 'Agregar: Mi nueva funcionalidad'
    ```
 4. **Push** a tu rama:
    ```bash
-   git push origin feature/NuevaFuncionalidad
+   git push origin feature/MiNuevaFuncionalidad
    ```
-5. Abre un **Pull Request** con descripción detallada
+5. **Abre un Pull Request** con descripción detallada
 
-### Guía de Contribución
-- Mantén el código limpio y comentado
-- Sigue las convenciones de nombres existentes
-- Prueba en múltiples navegadores
-- Actualiza el README si agregas features
+### Guía de Estilo
+- Código limpio y comentado
+- Variables en español descriptivas
+- Funciones modulares y reutilizables
+- Responsive desde el inicio
+- Prueba en Chrome, Firefox, Safari, Edge
 
 ## 📝 Licencia
 
-Este proyecto está bajo la **Licencia MIT** - puedes usarlo libremente en proyectos personales y comerciales.
+Este proyecto está bajo la **Licencia MIT**.
 
-Ver el archivo [LICENSE](LICENSE) para más detalles.
+Puedes:
+- ✅ Usar comercialmente
+- ✅ Modificar
+- ✅ Distribuir
+- ✅ Uso privado
+
+Ver [LICENSE](LICENSE) para más detalles.
 
 ## 👤 Autor
 
@@ -251,29 +291,55 @@ Ver el archivo [LICENSE](LICENSE) para más detalles.
 ## 🙏 Agradecimientos
 
 Gracias a estas plataformas por proporcionar APIs gratuitas:
-- [mindicador.cl](https://mindicador.cl) - Indicadores económicos de Chile
-- [CoinGecko](https://www.coingecko.com) - Datos de criptomonedas
-- [ExchangeRatesAPI](https://exchangeratesapi.io) - Tasas de cambio
-- [DolarAPI](https://dolarapi.com) - Monedas latinoamericanas
-- [Chart.js](https://www.chartjs.org/) - Librería de gráficos
 
-## 📈 Estadísticas del Proyecto
+- **[Mindicador.cl](https://mindicador.cl)** - Indicadores económicos de Chile
+- **[ExchangeRatesAPI](https://exchangeratesapi.io)** - Tasas de cambio globales
+- **[DolarAPI](https://dolarapi.com)** - Monedas latinoamericanas
+- **[Chart.js](https://www.chartjs.org/)** - Biblioteca de gráficos profesionales
+- **Comunidad de desarrolladores** de Chile y Latinoamérica 💙
 
-- **10 Monedas** monitoreadas
-- **4 APIs** integradas
-- **4 Gráficos** interactivos
-- **100% Gratuito** y open source
-- **0 Dependencias** de backend
-- **Responsive** para todos los dispositivos
+## 📈 Estadísticas
+
+| Característica | Cantidad |
+|------------------|----------|
+| Monedas disponibles | 8 |
+| APIs integradas | 3 |
+| Gráficos interactivos | 2 |
+| Tipos de consulta | 2 (tiempo real + fecha) |
+| Períodos de análisis | 4 (7, 30, 90, 365 días) |
+| Idiomas | Español |
+| Costo | 100% Gratis |
+| Dependencias backend | 0 |
+| Compatibilidad | Todos los navegadores modernos |
+
+## 👁️ Capturas de Pantalla
+
+### Selección de Monedas
+![Selector de monedas con checkboxes](#)
+
+### Consulta por Fecha
+![Búsqueda histórica con calendario](#)
+
+### Gráficos Dinámicos
+![Comparación de múltiples monedas](#)
+
+### Vista Móvil
+![Diseño responsive en smartphone](#)
 
 ---
 
 <div align="center">
 
-### 🌟 Si este proyecto te resultó útil, ¡dale una estrella! ⭐
+### 🌟 ¿Te gustó el proyecto? ¡Dale una estrella! ⭐
 
-**[Ver Demo en Vivo](https://diegocabrera91.github.io/Monitor-monedas-extranjeras)** | **[Reportar Bug](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)** | **[Solicitar Feature](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)**
+**[Ver Demo](https://diegocabrera91.github.io/Monitor-monedas-extranjeras)** | 
+**[Reportar Bug](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues)** | 
+**[Solicitar Feature](https://github.com/Diegocabrera91/Monitor-monedas-extranjeras/issues/new)**
 
-Hecho con ❤️ en Chile 🇨🇱
+---
+
+**Hecho con ❤️ y ☕ en Chile** 🇨🇱
+
+*Última actualización: Febrero 2026*
 
 </div>
