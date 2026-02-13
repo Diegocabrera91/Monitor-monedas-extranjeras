@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - Exchange Rate Service</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        input, select, button {
+            padding: 10px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+        }
+
+        .result-box.success {
+            background: #d4edda;
+            border-left-color: #28a745;
+        }
+
+        .result-box.error {
+            background: #f8d7da;
+            border-left-color: #dc3545;
+            color: #721c24;
+        }
+
+        .cache-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .cache-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .cache-card h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .cache-card p {
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .log-container {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+
+        .log-entry {
+            margin: 3px 0;
+            padding: 3px 0;
+        }
+
+        .log-success { color: #4ec9b0; }
+        .log-error { color: #f48771; }
+        .log-warn { color: #dcdcaa; }
+        .log-info { color: #9cdcfe; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .input-group { flex-direction: column; }
+            input, select, button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔧 Exchange Rate Service Demo</h1>
+            <p class="subtitle">Prueba todas las funciones del servicio modular</p>
+        </header>
+
+        <!-- Demo 1: Obtener todas las tasas -->
+        <div class="demo-section">
+            <h2>1️⃣ Obtener Todas las Tasas</h2>
+            <p>Obtiene todas las tasas de cambio para una moneda base</p>
+            <div class="input-group">
+                <select id="baseCurrency1">
+                    <option value="USD">USD - Dólar</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="CLP">CLP - Peso Chileno</option>
+                    <option value="GBP">GBP - Libra</option>
+                    <option value="JPY">JPY - Yen</option>
+                </select>
+                <button onclick="demo1()">🔍 Obtener Tasas</button>
+            </div>
+            <div id="result1" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Demo 2: Tasa específica -->
+        <div class="demo-section">
+            <h2>2️⃣ Obtener Tasa Específica</h2>
+            <p>Obtiene la tasa de cambio entre dos monedas</p>
+            <div class="input-group">
+                <select id="fromCurrency">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="CLP">CLP</option>
+                    <option value="GBP">GBP</option>
+                </select>
+                <span style="align-self: center;">→</span>
+                <select id="toCurrency">
+                    <option value="CLP">CLP</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="GBP">GBP</option>
+                </select>
+                <button onclick="demo2()">💱 Obtener Tasa</button>
+            </div>
+            <div id="result2" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Demo 3: Múltiples tasas -->
+        <div class="demo-section">
+            <h2>3️⃣ Obtener Múltiples Tasas</h2>
+            <p>Obtiene varias tasas específicas de una vez</p>
+            <div class="input-group">
+                <select id="baseCurrency3">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="CLP">CLP</option>
+                </select>
+                <button onclick="demo3()">📊 Obtener CLP, EUR, GBP, JPY</button>
+            </div>
+            <div id="result3" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Demo 4: Convertir moneda -->
+        <div class="demo-section">
+            <h2>4️⃣ Convertir Moneda</h2>
+            <p>Convierte una cantidad de una moneda a otra</p>
+            <div class="input-group">
+                <input type="number" id="amount" placeholder="Cantidad" value="100">
+                <select id="fromCurrency2">
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="CLP">CLP</option>
+                </select>
+                <span style="align-self: center;">→</span>
+                <select id="toCurrency2">
+                    <option value="CLP">CLP</option>
+                    <option value="USD">USD</option>
+                    <option value="EUR">EUR</option>
+                </select>
+                <button onclick="demo4()">💰 Convertir</button>
+            </div>
+            <div id="result4" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Demo 5: Información del caché -->
+        <div class="demo-section">
+            <h2>5️⃣ Información del Caché</h2>
+            <p>Muestra el estado del caché de datos</p>
+            <div class="input-group">
+                <button onclick="demo5()">📂 Ver Caché</button>
+                <button onclick="clearCacheDemo()">🗑️ Limpiar Todo</button>
+                <button onclick="clearExpiredDemo()">⏰ Limpiar Expirados</button>
+            </div>
+            <div id="result5" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Demo 6: Estadísticas del servicio -->
+        <div class="demo-section">
+            <h2>6️⃣ Estadísticas del Servicio</h2>
+            <p>Estadísticas de uso y rendimiento</p>
+            <div class="input-group">
+                <button onclick="demo6()">📈 Ver Estadísticas</button>
+            </div>
+            <div id="result6" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Demo 7: Monedas disponibles -->
+        <div class="demo-section">
+            <h2>7️⃣ Monedas Disponibles</h2>
+            <p>Lista de todas las monedas soportadas</p>
+            <div class="input-group">
+                <button onclick="demo7()">🌍 Listar Monedas</button>
+            </div>
+            <div id="result7" class="result-box" style="display:none;"></div>
+        </div>
+
+        <!-- Console Log -->
+        <div class="demo-section">
+            <h2>📋 Console Log</h2>
+            <p>Registro de actividad del servicio</p>
+            <button onclick="clearLog()" style="margin-bottom: 10px;">🗑️ Limpiar Log</button>
+            <div id="consoleLog" class="log-container"></div>
+        </div>
+    </div>
+
+    <!-- Cargar el servicio -->
+    <script type="module">
+        // Importar el servicio
+        import * as ExchangeService from './exchangeRateService.js';
+        
+        // Hacer disponible globalmente
+        window.ExchangeService = ExchangeService;
+        
+        // Interceptar console.log para mostrar en la interfaz
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+        
+        window.logToUI = function(message, type = 'info') {
+            const logContainer = document.getElementById('consoleLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            const timestamp = new Date().toLocaleTimeString('es-CL');
+            entry.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(entry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+        };
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            logToUI(args.join(' '), 'info');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            logToUI('ERROR: ' + args.join(' '), 'error');
+        };
+        
+        console.warn = function(...args) {
+            originalWarn.apply(console, args);
+            logToUI('WARN: ' + args.join(' '), 'warn');
+        };
+        
+        // Demos
+        window.demo1 = async function() {
+            const base = document.getElementById('baseCurrency1').value;
+            const result = document.getElementById('result1');
+            result.style.display = 'block';
+            result.className = 'result-box';
+            result.innerHTML = '<p>⏳ Cargando...</p>';
+            
+            try {
+                const rates = await ExchangeService.getExchangeRates(base);
+                const rateCount = Object.keys(rates).length;
+                const sampleRates = Object.entries(rates).slice(0, 10);
+                
+                let html = `<h3>✅ ${rateCount} tasas obtenidas para ${base}</h3>`;
+                html += '<p><strong>Primeras 10 tasas:</strong></p>';
+                html += '<ul>';
+                sampleRates.forEach(([currency, rate]) => {
+                    html += `<li><code>${currency}</code>: ${rate.toFixed(4)}</li>`;
+                });
+                html += '</ul>';
+                html += `<p style="margin-top:10px;"><em>... y ${rateCount - 10} más</em></p>`;
+                
+                result.className = 'result-box success';
+                result.innerHTML = html;
+            } catch (error) {
+                result.className = 'result-box error';
+                result.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+            }
+        };
+        
+        window.demo2 = async function() {
+            const from = document.getElementById('fromCurrency').value;
+            const to = document.getElementById('toCurrency').value;
+            const result = document.getElementById('result2');
+            result.style.display = 'block';
+            result.className = 'result-box';
+            result.innerHTML = '<p>⏳ Cargando...</p>';
+            
+            try {
+                const rate = await ExchangeService.getExchangeRate(from, to);
+                
+                result.className = 'result-box success';
+                result.innerHTML = `
+                    <h3>✅ Tasa obtenida</h3>
+                    <p style="font-size: 1.5rem; margin: 10px 0;">
+                        <code>1 ${from}</code> = <strong>${rate.toFixed(4)}</strong> <code>${to}</code>
+                    </p>
+                    <p style="font-size: 1.2rem;">
+                        <code>100 ${from}</code> = <strong>${(rate * 100).toFixed(2)}</strong> <code>${to}</code>
+                    </p>
+                `;
+            } catch (error) {
+                result.className = 'result-box error';
+                result.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+            }
+        };
+        
+        window.demo3 = async function() {
+            const base = document.getElementById('baseCurrency3').value;
+            const targets = ['CLP', 'EUR', 'GBP', 'JPY'];
+            const result = document.getElementById('result3');
+            result.style.display = 'block';
+            result.className = 'result-box';
+            result.innerHTML = '<p>⏳ Cargando...</p>';
+            
+            try {
+                const rates = await ExchangeService.getMultipleExchangeRates(base, targets);
+                
+                let html = `<h3>✅ ${Object.keys(rates).length} tasas obtenidas para ${base}</h3>`;
+                html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-top: 15px;">';
+                
+                Object.entries(rates).forEach(([currency, rate]) => {
+                    html += `
+                        <div style="background: white; padding: 10px; border-radius: 5px; text-align: center;">
+                            <strong>${currency}</strong><br>
+                            <span style="font-size: 1.2rem;">${rate.toFixed(4)}</span>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                
+                result.className = 'result-box success';
+                result.innerHTML = html;
+            } catch (error) {
+                result.className = 'result-box error';
+                result.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+            }
+        };
+        
+        window.demo4 = async function() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const from = document.getElementById('fromCurrency2').value;
+            const to = document.getElementById('toCurrency2').value;
+            const result = document.getElementById('result4');
+            result.style.display = 'block';
+            result.className = 'result-box';
+            result.innerHTML = '<p>⏳ Cargando...</p>';
+            
+            try {
+                const conversion = await ExchangeService.convertCurrency(amount, from, to);
+                
+                result.className = 'result-box success';
+                result.innerHTML = `
+                    <h3>✅ Conversión completada</h3>
+                    <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                        <p style="font-size: 1.8rem; text-align: center; margin: 10px 0;">
+                            <strong>${conversion.amount} ${conversion.fromCurrency}</strong> =<br>
+                            <strong style="color: #667eea;">${conversion.convertedAmount} ${conversion.toCurrency}</strong>
+                        </p>
+                        <p style="text-align: center; color: #666; margin-top: 10px;">
+                            Tasa: 1 ${from} = ${conversion.rate.toFixed(4)} ${to}
+                        </p>
+                    </div>
+                `;
+            } catch (error) {
+                result.className = 'result-box error';
+                result.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+            }
+        };
+        
+        window.demo5 = function() {
+            const cacheInfo = ExchangeService.getCacheInfo();
+            const result = document.getElementById('result5');
+            result.style.display = 'block';
+            
+            const entries = Object.keys(cacheInfo).length;
+            
+            if (entries === 0) {
+                result.className = 'result-box';
+                result.innerHTML = '<p>📭 El caché está vacío</p>';
+                return;
+            }
+            
+            let html = `<h3>📂 ${entries} entradas en caché</h3>`;
+            html += '<div class="cache-info">';
+            
+            Object.entries(cacheInfo).forEach(([currency, info]) => {
+                const statusIcon = info.valid ? '✅' : '⏰';
+                const statusText = info.valid ? 'Válido' : 'Expirado';
+                
+                html += `
+                    <div class="cache-card">
+                        <h4>${statusIcon} ${currency}</h4>
+                        <p><strong>Estado:</strong> ${statusText}</p>
+                        <p><strong>Edad:</strong> ${info.ageFormatted}</p>
+                        ${info.valid ? `<p><strong>Expira en:</strong> ${info.expiresInFormatted}</p>` : ''}
+                        <p><strong>Monedas:</strong> ${info.currencyCount}</p>
+                        <p><strong>Fecha:</strong> ${info.date}</p>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            
+            result.className = 'result-box success';
+            result.innerHTML = html;
+        };
+        
+        window.demo6 = function() {
+            const stats = ExchangeService.getServiceStats();
+            const result = document.getElementById('result6');
+            result.style.display = 'block';
+            
+            result.className = 'result-box success';
+            result.innerHTML = `
+                <h3>📊 Estadísticas del Servicio</h3>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Entradas</div>
+                        <div class="stat-value">${stats.totalEntries}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Entradas Válidas</div>
+                        <div class="stat-value">${stats.validEntries}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Entradas Expiradas</div>
+                        <div class="stat-value">${stats.expiredEntries}</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Duración Caché</div>
+                        <div class="stat-value">${stats.cacheDuration}s</div>
+                    </div>
+                </div>
+            `;
+        };
+        
+        window.demo7 = async function() {
+            const result = document.getElementById('result7');
+            result.style.display = 'block';
+            result.className = 'result-box';
+            result.innerHTML = '<p>⏳ Cargando...</p>';
+            
+            try {
+                const currencies = await ExchangeService.getAvailableCurrencies();
+                
+                result.className = 'result-box success';
+                result.innerHTML = `
+                    <h3>🌍 ${currencies.length} monedas disponibles</h3>
+                    <div style="column-count: 4; column-gap: 15px; margin-top: 15px;">
+                        ${currencies.map(c => `<p><code>${c}</code></p>`).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                result.className = 'result-box error';
+                result.innerHTML = `<p>❌ Error: ${error.message}</p>`;
+            }
+        };
+        
+        window.clearCacheDemo = function() {
+            ExchangeService.clearCache();
+            demo5();
+        };
+        
+        window.clearExpiredDemo = function() {
+            ExchangeService.clearExpiredCache();
+            demo5();
+        };
+        
+        window.clearLog = function() {
+            document.getElementById('consoleLog').innerHTML = '';
+            console.log('Log limpiado');
+        };
+        
+        // Log inicial
+        console.log('🚀 Demo iniciada - ExchangeRate Service cargado correctamente');
+    </script>
+</body>
+</html>
