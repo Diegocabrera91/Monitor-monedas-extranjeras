@@ -10,7 +10,7 @@
     <div class="container">
         <header>
             <h1>💰 Monitor de Monedas Extranjeras</h1>
-            <p class="subtitle">Valores en tiempo real desde múltiples fuentes</p>
+            <p class="subtitle">Valores en tiempo real con selección personalizada</p>
         </header>
 
         <div class="update-info">
@@ -19,7 +19,6 @@
                 <select id="apiSelector" onchange="changeAPI()">
                     <option value="all">🌐 Todas las APIs</option>
                     <option value="mindicador">🇨🇱 Mindicador (Chile)</option>
-                    <option value="coingecko">₿ CoinGecko (Cripto)</option>
                     <option value="exchangerate">💱 ExchangeRate</option>
                     <option value="dolarapi">💵 DolarAPI (LATAM)</option>
                 </select>
@@ -27,153 +26,69 @@
             </div>
         </div>
 
-        <!-- Monedas Tradicionales Chile -->
-        <div class="section-header">
-            <h2>🇨🇱 Indicadores Chile</h2>
-        </div>
-        <div class="cards-container">
-            <div class="card dolar-observado">
-                <div class="card-header">
-                    <h2>Dólar Observado</h2>
-                    <span class="badge">Oficial</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="dolarObservado">-</p>
-                    <p class="variation" id="variacionObservado">-</p>
-                    <p class="api-source" id="sourceDolarObservado">-</p>
-                </div>
+        <!-- Selector de Monedas -->
+        <div class="currency-selector-container">
+            <h2>🔍 Seleccionar Monedas a Mostrar</h2>
+            <div class="currency-checkboxes">
+                <label class="checkbox-item">
+                    <input type="checkbox" value="dolar" checked onchange="toggleCurrency(this)">
+                    <span>💵 Dólar (USD)</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="euro" checked onchange="toggleCurrency(this)">
+                    <span>💶 Euro (EUR)</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="uf" checked onchange="toggleCurrency(this)">
+                    <span>🏦 UF</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="ars" onchange="toggleCurrency(this)">
+                    <span>🇦🇷 Peso Argentino (ARS)</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="brl" onchange="toggleCurrency(this)">
+                    <span>🇧🇷 Real Brasileño (BRL)</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="gbp" onchange="toggleCurrency(this)">
+                    <span>🇬🇧 Libra Esterlina (GBP)</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="jpy" onchange="toggleCurrency(this)">
+                    <span>🇯🇵 Yen Japonés (JPY)</span>
+                </label>
             </div>
-
-            <div class="card dolar-intercambio">
-                <div class="card-header">
-                    <h2>Dólar Acuerdo</h2>
-                    <span class="badge">Intercambio</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="dolarAcuerdo">-</p>
-                    <p class="variation" id="variacionAcuerdo">-</p>
-                    <p class="api-source" id="sourceDolarAcuerdo">-</p>
-                </div>
-            </div>
-
-            <div class="card euro">
-                <div class="card-header">
-                    <h2>Euro</h2>
-                    <span class="badge">EUR</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="euro">-</p>
-                    <p class="variation" id="variacionEuro">-</p>
-                    <p class="api-source" id="sourceEuro">-</p>
-                </div>
-            </div>
-
-            <div class="card uf">
-                <div class="card-header">
-                    <h2>UF</h2>
-                    <span class="badge">Unidad Fomento</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="uf">-</p>
-                    <p class="variation" id="variacionUF">-</p>
-                    <p class="api-source" id="sourceUF">-</p>
-                </div>
-            </div>
+            <button class="apply-btn" onclick="applySelection()">✅ Aplicar Selección</button>
         </div>
 
-        <!-- Monedas Latinoamericanas -->
-        <div class="section-header">
-            <h2>🌎 Monedas Latinoamericanas</h2>
-        </div>
-        <div class="cards-container">
-            <div class="card peso-argentino">
-                <div class="card-header">
-                    <h2>Peso Argentino</h2>
-                    <span class="badge">🇦🇷 ARS</span>
+        <!-- Consulta por Fecha -->
+        <div class="date-selector-container">
+            <h2>📅 Consultar Valor por Fecha</h2>
+            <div class="date-controls">
+                <div class="date-input-group">
+                    <label for="dateInput">Seleccionar fecha:</label>
+                    <input type="date" id="dateInput" onchange="searchByDate()">
                 </div>
-                <div class="card-body">
-                    <p class="value" id="pesoArgentino">-</p>
-                    <p class="variation" id="variacionARS">-</p>
-                    <p class="api-source" id="sourceARS">-</p>
+                <div class="date-input-group">
+                    <label for="currencyDate">Moneda:</label>
+                    <select id="currencyDate">
+                        <option value="dolar">Dólar USD</option>
+                        <option value="euro">Euro</option>
+                        <option value="uf">UF</option>
+                    </select>
                 </div>
+                <button class="search-btn" onclick="searchByDate()">🔍 Buscar</button>
             </div>
-
-            <div class="card real-brasileno">
-                <div class="card-header">
-                    <h2>Real Brasileño</h2>
-                    <span class="badge">🇧🇷 BRL</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="realBrasileno">-</p>
-                    <p class="variation" id="variacionBRL">-</p>
-                    <p class="api-source" id="sourceBRL">-</p>
-                </div>
-            </div>
+            <div id="dateResult" class="date-result"></div>
         </div>
 
-        <!-- Monedas Internacionales -->
-        <div class="section-header">
-            <h2>🌍 Monedas Internacionales</h2>
-        </div>
-        <div class="cards-container">
-            <div class="card libra">
-                <div class="card-header">
-                    <h2>Libra Esterlina</h2>
-                    <span class="badge">🇬🇧 GBP</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="libra">-</p>
-                    <p class="variation" id="variacionGBP">-</p>
-                    <p class="api-source" id="sourceGBP">-</p>
-                </div>
-            </div>
+        <!-- Tarjetas de Monedas (Dinámicas) -->
+        <div id="currencyCards" class="cards-container"></div>
 
-            <div class="card yen">
-                <div class="card-header">
-                    <h2>Yen Japonés</h2>
-                    <span class="badge">🇯🇵 JPY</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="yen">-</p>
-                    <p class="variation" id="variacionJPY">-</p>
-                    <p class="api-source" id="sourceJPY">-</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Criptomonedas -->
-        <div class="section-header">
-            <h2>₿ Criptomonedas</h2>
-        </div>
-        <div class="cards-container">
-            <div class="card bitcoin">
-                <div class="card-header">
-                    <h2>Bitcoin</h2>
-                    <span class="badge">₿ BTC</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="bitcoin">-</p>
-                    <p class="variation" id="variacionBTC">-</p>
-                    <p class="api-source" id="sourceBTC">-</p>
-                </div>
-            </div>
-
-            <div class="card ethereum">
-                <div class="card-header">
-                    <h2>Ethereum</h2>
-                    <span class="badge">Ξ ETH</span>
-                </div>
-                <div class="card-body">
-                    <p class="value" id="ethereum">-</p>
-                    <p class="variation" id="variacionETH">-</p>
-                    <p class="api-source" id="sourceETH">-</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Estadísticas del Dólar -->
-        <div class="stats-container">
-            <h2>📈 Estadísticas del Dólar Observado</h2>
+        <!-- Estadísticas -->
+        <div class="stats-container" id="statsContainer" style="display:none;">
+            <h2>📈 Estadísticas de <span id="statsTitle">la Moneda</span></h2>
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-label">Mínimo (30 días)</span>
@@ -194,46 +109,58 @@
             </div>
         </div>
 
-        <!-- Gráfico Principal con Selector de Período -->
-        <div class="chart-container">
-            <div class="chart-header">
-                <h2>📊 Evolución Histórica del Dólar Observado</h2>
-                <div class="period-selector">
-                    <button class="period-btn" data-period="7" onclick="changePeriod(7)">7 días</button>
-                    <button class="period-btn active" data-period="30" onclick="changePeriod(30)">30 días</button>
-                    <button class="period-btn" data-period="90" onclick="changePeriod(90)">90 días</button>
-                    <button class="period-btn" data-period="365" onclick="changePeriod(365)">1 año</button>
-                </div>
+        <!-- Selector de Monedas para Gráficos -->
+        <div class="chart-selector-container">
+            <h2>📊 Configurar Gráfico de Comparación</h2>
+            <p class="chart-description">Selecciona hasta 5 monedas para comparar en el gráfico</p>
+            <div class="chart-currency-selector">
+                <label class="checkbox-item">
+                    <input type="checkbox" value="dolar" class="chart-checkbox" checked onchange="updateComparisonChart()">
+                    <span>💵 Dólar</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="euro" class="chart-checkbox" checked onchange="updateComparisonChart()">
+                    <span>💶 Euro</span>
+                </label>
+                <label class="checkbox-item">
+                    <input type="checkbox" value="uf" class="chart-checkbox" onchange="updateComparisonChart()">
+                    <span>🏦 UF</span>
+                </label>
             </div>
-            <canvas id="chartMain"></canvas>
+            <div class="period-selector">
+                <button class="period-btn" data-period="7" onclick="changeChartPeriod(7)">7 días</button>
+                <button class="period-btn active" data-period="30" onclick="changeChartPeriod(30)">30 días</button>
+                <button class="period-btn" data-period="90" onclick="changeChartPeriod(90)">90 días</button>
+                <button class="period-btn" data-period="365" onclick="changeChartPeriod(365)">1 año</button>
+            </div>
         </div>
 
-        <!-- Gráfico Comparativo -->
+        <!-- Gráfico de Comparación -->
         <div class="chart-container">
-            <h2>🔄 Comparación: Dólar, Euro y UF (Últimos 30 días)</h2>
-            <p class="chart-description">Valores normalizados para facilitar la comparación de tendencias</p>
+            <h2>🔄 Comparación de Monedas Seleccionadas</h2>
+            <p class="chart-description">Valores normalizados (base 100) para comparar tendencias</p>
             <canvas id="chartComparison"></canvas>
         </div>
 
         <!-- Gráfico de Volatilidad -->
         <div class="chart-container">
-            <h2>📉 Volatilidad Diaria del Dólar (Últimos 30 días)</h2>
+            <h2>📉 Volatilidad Diaria - <span id="volatilityTitle">Dólar</span></h2>
             <p class="chart-description">Variación porcentual día a día</p>
+            <div class="volatility-selector">
+                <label for="volatilityCurrency">Moneda:</label>
+                <select id="volatilityCurrency" onchange="updateVolatilityChart()">
+                    <option value="dolar">Dólar USD</option>
+                    <option value="euro">Euro</option>
+                    <option value="uf">UF</option>
+                </select>
+            </div>
             <canvas id="chartVolatility"></canvas>
-        </div>
-
-        <!-- Gráfico de Criptomonedas -->
-        <div class="chart-container">
-            <h2>₿ Bitcoin vs Ethereum (Últimos 7 días)</h2>
-            <p class="chart-description">Comparación de precios en USD</p>
-            <canvas id="chartCrypto"></canvas>
         </div>
 
         <footer>
             <p>Datos proporcionados por múltiples fuentes:</p>
             <div class="api-credits">
                 <a href="https://mindicador.cl" target="_blank">mindicador.cl</a> |
-                <a href="https://www.coingecko.com" target="_blank">CoinGecko</a> |
                 <a href="https://exchangeratesapi.io" target="_blank">ExchangeRatesAPI</a> |
                 <a href="https://dolarapi.com" target="_blank">DolarAPI</a>
             </div>
