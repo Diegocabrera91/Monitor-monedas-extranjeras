@@ -10,17 +10,17 @@
     <div class="container">
         <header>
             <h1>💰 Monitor de Monedas Extranjeras</h1>
-            <p class="subtitle">Valores en tiempo real con selección personalizada</p>
+            <p class="subtitle">Valores en tiempo real con compra/venta y cotizaciones bancarias</p>
         </header>
 
         <div class="update-info">
             <span id="lastUpdate">Cargando datos...</span>
             <div class="controls">
                 <select id="apiSelector" onchange="changeAPI()">
-                    <option value="all">🌐 Todas las APIs</option>
+                    <option value="all">🌐 Todas las Fuentes</option>
                     <option value="mindicador">🇨🇱 Mindicador (Chile)</option>
+                    <option value="bcentral">🏦 Banco Central Chile</option>
                     <option value="exchangerate">💱 ExchangeRate</option>
-                    <option value="dolarapi">💵 DolarAPI (LATAM)</option>
                 </select>
                 <button id="refreshBtn" onclick="loadData()">🔄 Actualizar</button>
             </div>
@@ -43,8 +43,8 @@
                     <span>🏦 UF</span>
                 </label>
                 <label class="checkbox-item">
-                    <input type="checkbox" value="ars" onchange="toggleCurrency(this)">
-                    <span>🇦🇷 Peso Argentino (ARS)</span>
+                    <input type="checkbox" value="cny" onchange="toggleCurrency(this)">
+                    <span>🇨🇳 Yuan Chino (CNY)</span>
                 </label>
                 <label class="checkbox-item">
                     <input type="checkbox" value="brl" onchange="toggleCurrency(this)">
@@ -85,6 +85,15 @@
 
         <!-- Tarjetas de Monedas (Dinámicas) -->
         <div id="currencyCards" class="cards-container"></div>
+
+        <!-- Valores Bancarios -->
+        <div class="bank-values-container">
+            <h2>🏦 Valores en Bancos Comerciales (Dólar)</h2>
+            <p class="chart-description">Comparación de compra y venta entre principales bancos de Chile</p>
+            <div id="bankValues" class="bank-grid">
+                <p class="loading-text">Cargando datos bancarios...</p>
+            </div>
+        </div>
 
         <!-- Estadísticas -->
         <div class="stats-container" id="statsContainer" style="display:none;">
@@ -161,8 +170,8 @@
             <p>Datos proporcionados por múltiples fuentes:</p>
             <div class="api-credits">
                 <a href="https://mindicador.cl" target="_blank">mindicador.cl</a> |
-                <a href="https://exchangeratesapi.io" target="_blank">ExchangeRatesAPI</a> |
-                <a href="https://dolarapi.com" target="_blank">DolarAPI</a>
+                <a href="https://si3.bcentral.cl" target="_blank">Banco Central de Chile</a> |
+                <a href="https://exchangeratesapi.io" target="_blank">ExchangeRatesAPI</a>
             </div>
             <p class="disclaimer">* Los valores son referenciales y pueden variar según la fuente</p>
         </footer>
