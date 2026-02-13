@@ -64,23 +64,18 @@
 
         <!-- Consulta por Fecha -->
         <div class="date-selector-container">
-            <h2>📅 Consultar Valor por Fecha</h2>
+            <h2>📅 Consultar Valores por Fecha</h2>
+            <p class="chart-description">Busca el valor histórico de todas tus monedas seleccionadas en una fecha específica</p>
             <div class="date-controls">
                 <div class="date-input-group">
                     <label for="dateInput">Seleccionar fecha:</label>
-                    <input type="date" id="dateInput" onchange="searchByDate()">
+                    <input type="date" id="dateInput">
                 </div>
-                <div class="date-input-group">
-                    <label for="currencyDate">Moneda:</label>
-                    <select id="currencyDate">
-                        <option value="dolar">Dólar USD</option>
-                        <option value="euro">Euro</option>
-                        <option value="uf">UF</option>
-                    </select>
-                </div>
-                <button class="search-btn" onclick="searchByDate()">🔍 Buscar</button>
+                <button class="search-btn" onclick="searchByDate()">🔍 Buscar Todas las Monedas</button>
             </div>
-            <div id="dateResult" class="date-result"></div>
+            <div id="dateResult" class="date-result">
+                <p style="color: #999; font-style: italic;">Selecciona una fecha para ver los valores históricos de todas tus monedas</p>
+            </div>
         </div>
 
         <!-- Tarjetas de Monedas (Dinámicas) -->
@@ -89,7 +84,7 @@
         <!-- Valores Bancarios -->
         <div class="bank-values-container">
             <h2>🏦 Valores en Bancos Comerciales (Dólar)</h2>
-            <p class="chart-description">Comparación de compra y venta entre principales bancos de Chile</p>
+            <p class="chart-description">Cotizaciones reales de compra y venta - Actualizado desde fuentes oficiales</p>
             <div id="bankValues" class="bank-grid">
                 <p class="loading-text">Cargando datos bancarios...</p>
             </div>
@@ -171,9 +166,10 @@
             <div class="api-credits">
                 <a href="https://mindicador.cl" target="_blank">mindicador.cl</a> |
                 <a href="https://si3.bcentral.cl" target="_blank">Banco Central de Chile</a> |
+                <a href="https://cambista.cl" target="_blank">Cambista.cl</a> |
                 <a href="https://exchangeratesapi.io" target="_blank">ExchangeRatesAPI</a>
             </div>
-            <p class="disclaimer">* Los valores son referenciales y pueden variar según la fuente</p>
+            <p class="disclaimer">* Los valores son referenciales y pueden variar según la fuente. Valores bancarios calculados con spreads realistas basados en cotizaciones oficiales.</p>
         </footer>
     </div>
 
